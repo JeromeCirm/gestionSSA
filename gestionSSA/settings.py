@@ -31,10 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "jeulibre.apps.JeulibreConfig",
-    "planning.apps.PlanningConfig",
-    "tournois.apps.TournoisConfig",
-    "utilisateurs.apps.UtilisateursConfig",
+    "base.apps.BaseConfig",
+    "gestionAdmin.apps.GestionAdminConfig",
+    "gestionCreneaux.apps.GestionCreneauxConfig",
+    "staff.apps.StaffConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,10 +58,10 @@ ROOT_URLCONF = 'gestionSSA.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'utilisateurs/templates/utilisateurs',
-                 BASE_DIR/'jeulibre/templates/jeulibre',
-                 BASE_DIR/'tournois/templates/tournois',
-                 BASE_DIR/'planning/templates/planning',
+        'DIRS': [BASE_DIR/'base/templates/base',
+                 BASE_DIR/'gestionAdmin/templates/gestionAdmin',
+                 BASE_DIR/'gestionCreneaux/templates/gestionCreneaux',
+                 BASE_DIR/'staff/templates/staff',
                ],
         'APP_DIRS': True,
         'OPTIONS': {

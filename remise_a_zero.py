@@ -18,7 +18,7 @@ else:
         print("les deux mots de passe ne coïncident pas")
         exit()
 
-for x in ["gestionSSA","jeulibre","planning","tournois","utilisateurs"]:
+for x in ["gestionSSA","base","gestionAdmin","gestionCreneaux","staff"]:
     path=x+"/migrations"
     shutil.rmtree(path, ignore_errors=True)
     os.mkdir(path)

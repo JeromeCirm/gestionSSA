@@ -19,10 +19,10 @@ from django.urls import path,include,re_path
 from . import views
 
 urlpatterns = [
-    path("jeulibre/", include("jeulibre.urls")),
-    path("planning/", include("planning.urls")),
-    path("tournois/", include("tournois.urls")),
-    path("utilisateurs/", include("utilisateurs.urls")),
+    path("base/", include("base.urls")),
+    path("gestionAdmin/", include("gestionAdmin.urls")),
+    path("gestionCreneaux/", include("gestionCreneaux.urls")),
+    path("staff/", include("staff.urls")),
     path('admin/', admin.site.urls),
     re_path(r'a*', views.home,name='home'),    
 ]
