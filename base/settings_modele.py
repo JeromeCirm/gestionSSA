@@ -20,4 +20,4 @@ MY_AUTORISE_CREATION = False          #
 MY_AUTORISE_RECUPERATION = True
 
 # le titre du site
-MY_TITRE_SITE='titre version modele'
+MY_TITRE_SITE='Bienvenue chez SSA !'

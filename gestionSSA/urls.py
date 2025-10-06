@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include,re_path
-from . import views
+from gestionCreneaux.views import jeulibre
 
 urlpatterns = [
     path("base/", include("base.urls")),
@@ -24,5 +24,5 @@ urlpatterns = [
     path("gestionCreneaux/", include("gestionCreneaux.urls")),
     path("staff/", include("staff.urls")),
     path('admin/', admin.site.urls),
-    re_path(r'a*', views.home,name='home'),    
+    re_path(r'a*', jeulibre,{"numero" : 1,"context": {}},name='home'),    
 ]

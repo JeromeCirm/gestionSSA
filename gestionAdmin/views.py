@@ -1,7 +1,13 @@
 from django.shortcuts import render
+from base.fonctions import auth
+from gestionCreneaux.fonctions import menu_navigation
 
-from django.http import HttpResponse
+@auth(None)
+def creationcreneaux(request,numero,context):
+    context={"menu" : menu_navigation(request)}
+    return render(request,'gestionAdmin/creationcreneaux.html',context)
 
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the gestionAdmin index.")
+@auth(None)
+def gestionsportive(request,numero,context):
+    context={"menu" : menu_navigation(request)}
+    return render(request,'gestionAdmin/gestionsportive.html',context)

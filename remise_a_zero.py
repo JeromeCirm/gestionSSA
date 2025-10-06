@@ -6,18 +6,6 @@
 import os
 import shutil
 
-admin_login=input("login admin (vide pour admin) : ")
-if admin_login=="":
-    admin_login="admin"
-admin_mdp=input("mot de passe admin (vide pour admin) : ")
-if admin_mdp=="":
-    admin_mdp="admin"
-else:
-    confirm_mdp=input("entrer de nouveau le mot de passe : ")
-    if confirm_mdp!=admin_mdp:
-        print("les deux mots de passe ne coïncident pas")
-        exit()
-
 for x in ["gestionSSA","base","gestionAdmin","gestionCreneaux","staff"]:
     path=x+"/migrations"
     shutil.rmtree(path, ignore_errors=True)
@@ -33,7 +21,6 @@ except:
 
 os.system("python manage.py makemigrations")
 os.system("python manage.py migrate")
-os.system("python manage.py remise_a_zero_command "+admin_login+" "+admin_mdp)
+os.system("python manage.py remise_a_zero_command")     
 
 print("Réinitialisation terminée.")
-

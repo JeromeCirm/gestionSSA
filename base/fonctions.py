@@ -165,3 +165,20 @@ def reinitialise_mot_de_passe(request):
     except:
         return {"autorise" : False, "msg":"le lien est invalide"}
 
+def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_attente_confirmation=True,reinitialisation_password=False,admin=False):
+    new_user=User.objects.create_user(username=login,first_name=prenom,last_name=nom,email=mail,password=password)
+    if admin:
+        new_user.is_admin=True
+        new_user.is_staff=True
+        new_user.is_superuser=True
+    new_user.save()
+    if en_attente_confirmation:
+        le_hash=hash()
+        Utilisateur(user=new_user,telephone=telephone,csrf_token=le_hash,en_attente_confirmation=True,date_demande=datetime.datetime.now()).save()
+        msg="Bonjour "+prenom+",\n\nVoici le lien pour activer le compte sur le site SSA (valable 7 jours): \n" 
+        msg+=MY_URL_COMPLETE+"validation_compte/"+login+"/"+le_hash
+        msg+="\n\nL'équipe SSA"    
+        envoie_mail([mail],'inscription site SSA',msg)
+    else:
+        Utilisateur(user=new_user,telephone=telephone,en_attente_confirmation=False).save()
+    return new_user

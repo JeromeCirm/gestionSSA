@@ -12,11 +12,8 @@ def connexion(request):
             try:
                 utilisateur=Utilisateur.objects.get(user=user)
                 if not utilisateur.en_attente_confirmation:
-                    if utilisateur.doit_changer_mdp:
-                        return redirect('/change_mdp')
-                    else:
-                        login(request,user)
-                        return redirect('/home')
+                    login(request,user)
+                    return redirect('/home')
                 #compte en attente si on arrive ici
             except:
                 pass
@@ -97,8 +94,3 @@ def change_mdp(request):
                 pass
     return render(request,'base/change_mdp.html',context)
 
-import gestionSSA.views as my_view
-
-@auth(None)
-def home(request):
-    return   my_view.home(request) 

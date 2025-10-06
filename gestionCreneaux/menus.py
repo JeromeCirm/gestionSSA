@@ -1,0 +1,1 @@
+liste_menus_defaut = ["jeulibre","creationcreneaux","gestionsportive","recapitulatif","inscrits","sportive"]
