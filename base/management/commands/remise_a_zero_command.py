@@ -1,8 +1,10 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
-from gestionCreneaux.models import Menu
-from django.contrib.auth.models import User,Group
+import datetime
+from gestionCreneaux.models import Menu,Evenement
 from base.fonctions import creation_utilisateur
+from gestionCreneaux.settings import *
+from gestionAdmin.fonctions import creation_tournoi
 
 class Command(BaseCommand):
     help = 'Adds a user to django'
@@ -74,8 +76,38 @@ class Command(BaseCommand):
                 user.groups.add(Group.objects.get(name=x))
 
         
-        ## Quelques créneaux pour voir le site en action : 
+        ## Quelques créneaux pour voir le site en action (2h): 
+        liste=[
+            #nom,description, decalage de jour, heure début, terrains, inscription
+            ["JL1","",1,12,14,4,False],
+            ["JL2","",1,17,19,4,True],
+            ["JL3","",3,12,14,4,False],
+            ["JL4","",3,17,19,4,True],
+            ["JL5","",-1,12,14,4,False],
+            ["JL6","",1,15,17,2,False],
+            ["JL7","",8,12,14,4,False],
+            ["JL8","",8,17,19,4,True],
+            ["JL9","",40,12,14,4,False],
+        ] 
+        bulk=[]
+        actu=datetime.datetime.now()
+        date=datetime.date(year=actu.year,month=actu.month,day=actu.day)
+        for nom,desc,decalage,debut,fin,nb_terrains,inscription in liste:
+            bulk.append(Evenement(type=EVENT_JEULIBRE,nom=nom,description=desc,jour=date+datetime.timedelta(days=decalage),debut=datetime.time(hour=debut),fin=datetime.time(hour=fin),nb_terrains=nb_terrains,avec_inscription=inscription))
+        Evenement.objects.bulk_create(bulk)
 
+        creation_tournoi("S3","X",date,referents=[],events=[[0,9,17,4,""]])
+        creation_tournoi("S1","X",date+datetime.timedelta(days=-15),referents=[],events=[[0,9,12,4,"Qualif Poules"],[0,12,17,4, "Qualif Barrages"],[1,9,16,4,"Main Draw"]])
+        creation_tournoi("S2","Jeunes",date+datetime.timedelta(days=8),referents=[],events=[[0,9,17,4,""]])
 
         ## des éventuels tests ? 
 
+        from gestionCreneaux.fonctions import lecture_creneaux
+        liste=lecture_creneaux(date,date+datetime.timedelta(days=3))
+        print("tous les évenements sur 3 jours : ")
+        for x in liste:
+            print(x)
+        print("juste les tournois : ")
+        liste=lecture_creneaux(date,date+datetime.timedelta(days=3),types=[EVENT_TOURNOI])
+        for x in liste:
+            print(x)

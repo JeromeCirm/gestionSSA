@@ -44,3 +44,29 @@ def menu_navigation(request):
             tableau.append((item.nom,item.id,item.fonction,subtableau))
     return tableau
 
+def lecture_creneaux(debut,fin,types=None,vision=None):
+    # retourne la liste des créneaux si vision=None
+    # retourne une structure html sinon selon la vision demandée
+    if types==None:
+        liste_brut=Evenement.objects.filter(jour__gte=debut,jour__lte=fin).order_by("jour","debut")
+    else:
+        liste_brut=Evenement.objects.filter(jour__gte=debut,jour__lte=fin,type__in=types).order_by("jour","debut")
+    if vision=="semaine":
+        return vision_semaine(liste_brut)
+    elif vision=="jour":
+        return vision_jour(liste_brut)
+    elif vision=="mois":
+        return vision_mois(liste_brut)
+    return liste_brut
+
+def vision_semaine(liste):
+    # retourne le code html à insérer pour une visions par semaine de la liste de créneaux
+    return liste
+
+def vision_jour(liste):
+    # retourne le code html à insérer pour une visions par jour de la liste de créneaux
+    return liste
+
+def vision_mois(liste):
+    # retourne le code html à insérer pour une visions par mois de la liste de créneaux
+    return liste
