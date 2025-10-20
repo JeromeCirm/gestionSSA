@@ -1,6 +1,11 @@
 {% extends 'gestionCreneaux/base.html' %}
 
 {% block body %}
+<style>
+.test {
+    overflow : scroll
+}    
+</style>
 {% csrf_token %}
 {% include 'menu.html'%}
 <BR> {% for line in annonce %} <p>{{ line }}</p>{% endfor %}
@@ -8,7 +13,272 @@
 
 <fieldset>
     <legend>Liste des créneaux disponibles : (créneaux sélectionnés en orange)</legend>
-    <div class="creneaux" id="creneaux_general">
+    <div class="creneaux test" id="creneaux_general">
+        \titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+\titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+\titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+\titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+\titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+\titre{Corrigé}
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'équation est définie sur $\RR$.\\
+Soit $x\in\RR$. On a : 
+\en{
+\item si $x\geq1$ : $|x-1|=|2x+2|-5\Leftrightarrow x-1=2x+2-5\Leftrightarrow x=2$
+\item si $x\in[-1,1]$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=2x+2-5\Leftrightarrow 3x=4$
+\item si $x\leq-1$, on a : $|x-1|=|2x+2|-5\Leftrightarrow 1-x=-2x-2-5\Leftrightarrow x=-8$}
+On en déduit que : \encadre{l'ensemble des solutions est $\{-8,2\}$}
+
+\item L'équation est définie sur $[-42,+\infty[$
+\en{
+\item on remarque que tout réel strictement négatif n'est pas solution.
+\item on considère ensuite $x\in\RR^{+}$.\\
+On a : $x=\sqrt{x+42}\Leftrightarrow x^2=x+42\Leftrightarrow x=7\ou x=-6$}
+
+On en déduit que : \encadre{l'ensemble des solutions est $\{7\}$}
+
+\item L'inéquation est définie sur $\RR\backslash\{-2,2\}$.
+\en{
+\item soit $x\in]-2,2[$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\geq x^2-4\Leftrightarrow x^2-4x+3\leq0$$
+Le trinôme admet deux racines 1 et 3 :\\
+on en déduit qu'il est négatif sur l'intervalle $[1,3]$
+\item soit $x\in\RR\backslash[-2,2]$. On a : $$\frac{4x-7}{x^2-4}\leq1\Leftrightarrow 4x-7\leq x^2-4\Leftrightarrow x^2-4x+3\geq0$$
+Le trinôme est positif en dehors de l'intervalle $]1,3[$}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,-2[\cup[1,2[\cup[3,+\infty[$}
+
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+
+\item 
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item L'inéquation est définie sur $\RR$.\\
+Soit $x\in\RR$.\\
+On a : $\sqrt{|x+2|}\leq|x-10|\Leftrightarrow|x+2|\leq(x-10)^2$ en passant au carré.
+\en{
+\item si $x\geq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow x+2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-21x+98$$
+Le trinôme admet deux racines $7$ et $14$ et est donc positif en dehors de ces racines.
+\item si $x\leq-2$ :\\
+on obtient : $$|x+2|\leq(x-10)^2\Leftrightarrow -x-2\leq x^2-20x+100\Leftrightarrow 0\leq x^2-19x+102$$
+Le trinôme a pour discriminant $-47$ et est donc strictement positif pour tout réel}
+En faisant attention aux ensembles de définition de la variable, on en déduit que : \encadre{l'ensemble des solutions de l'inéquation est $]-\infty,7]\cup[14,+\infty[$}
+\end{enumerate}
+
+\item 
+\begin{enumerate}
     </div>
 </fieldset>
 

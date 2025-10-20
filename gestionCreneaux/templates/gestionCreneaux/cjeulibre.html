@@ -1,0 +1,19 @@
+{% extends 'gestionCreneaux/base.html' %}
+
+{% block body %}
+{% csrf_token %}
+{% include 'menu.html'%}
+<BR> {% for line in annonce %} <p>{{ line }}</p>{% endfor %}
+{% if information %} {% for line in information %} <p>{{ line }}</p>{% endfor %} {% endif %}<BR>
+
+<fieldset>
+    <legend>Liste des créneaux disponibles : (créneaux sélectionnés en orange)</legend>
+    <div class="creneaux" id="creneaux_general">
+    </div>
+</fieldset>
+
+C'est la page jeu libre ! 
+
+<script>
+</script>
+{% endblock body %}
