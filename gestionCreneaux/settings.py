@@ -29,8 +29,7 @@ except:
 EVENT_JEULIBRE=1
 EVENT_ENTRAINEMENT=2
 EVENT_TOURNOI=3
-# les constantes pour indiquer le code couleur
-COULEUR_JEULIBRE=1
-COULEUR_ENTRAINEMENT=2
-COULEUR_TOURNOI=3
-COULEUR_ATTENTE=4
+
+# les constantes pour indiquer les rôles 
+ROLE_INSCRIT=0
+ROLE_STAFF=1

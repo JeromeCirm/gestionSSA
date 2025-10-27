@@ -4,6 +4,7 @@ from .fonctions import *
 from gestionAdmin.views import creationcreneaux,gestionsportive
 from staff.views import recapitulatif,inscrits,sportive
 from .menus import *
+import json
 
 @auth(None)
 def menu(request,numero):
@@ -25,5 +26,26 @@ def reglages(request):
     return render(request,'gestionCreneaux/reglages.html',context)
 
 def jeulibre(request,numero,context):
-    context={"menu" : menu_navigation(request)}
+    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
+    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
+    context={"menu" : menu_navigation(request), "creneaux" : preparation_creneaux(request.user,creneaux,inscriptions),"admin" : groupe_admin in request.user.groups.all()}
     return render(request,'gestionCreneaux/jeulibre.html',context)
+
+def click(request):
+    response_data={}
+    modifie=False
+    if request.POST["cmd"]=="0":
+        modifie=desinscription(request.user,request.POST["id"])
+    elif request.POST["cmd"]=="1":
+        modifie=inscription(request.user,request.POST["id"])
+    if modifie:
+        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
+        inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
+        response_data["events"]=preparation_creneaux(request.user,creneaux,inscriptions)
+    return HttpResponse(json.dumps(response_data), content_type="application/json") 
+
+def events(request):
+    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
+    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
+    tab=preparation_creneaux(request.user,creneaux,inscriptions)
+    return HttpResponse(json.dumps(tab), content_type="application/json") 

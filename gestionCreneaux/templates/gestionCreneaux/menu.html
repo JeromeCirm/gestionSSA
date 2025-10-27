@@ -1,26 +1,19 @@
 <header>
-  {% if user.is_authenticated %} <div class="center">Bonjour {{ user.username }}</div>{% endif %}
-  <nav id="navbar_top" class="autohide navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd; display:flex; 
-  align-items: center; justify-content: space-between;"> 
-    
+  {% if user.is_authenticated %} <div id="bonjour" class="center">Bonjour {{ user.username }}</div>{% endif %}
 
-           
+<!--Début du bandereau contenant le menu-->
+<nav id="navbar_top" class="autohide navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd; display:flex; 
+  align-items: center; justify-content: space-between;">            
 <div class="container-fluid"> 
-<!-- début menu -->
-<!--
-<a class="navbar-brand" href="#">Navbar</a>
--->
+<!--bouton collapse pour la version mobile, invisible de base-->
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
-</button> 
+</button>
 
-<!-- menu -->   
+<!-- Le contenu du menu -->   
 <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
 <ul class="navbar-nav mr-auto">
-      
-      
-     {% for item in menu %}
-                                                             
+     {% for item in menu %}                              
                     {% if item.3|length %} 
                         <li class="nav-item dropdown">
                              <a class="nav-link dropdown-toggle" {% if item.2 != -1 %} href="{% url 'menu' item.1 %}" {% endif %} id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{item.0}}
@@ -59,10 +52,16 @@
                              <a class="nav-link" href="{% url 'connexion' %}">Connexion</a> </li>
         {%endif%}
 </ul>
-    
-
 </div><!-- fin menu -->
-
 </div>
 </nav>
-    </header>
+</header>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  document.getElementById('navbar_top').classList.add('fixed-top');
+      // add padding top to show content behind navbar
+      navbar_height = document.querySelector('.navbar').offsetHeight;
+      document.body.style.paddingTop = navbar_height + 'px';
+  });
+</script>

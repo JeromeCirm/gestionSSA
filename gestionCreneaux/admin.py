@@ -14,6 +14,10 @@ class SportiveAdmin(admin.ModelAdmin):
 class TournoiAdmin(admin.ModelAdmin):
     pass
 
+class InscriptionAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Inscription,InscriptionAdmin)
 admin.site.register(Tournoi,TournoiAdmin)
 admin.site.register(Sportive,SportiveAdmin)
 admin.site.register(Evenement,EvenementAdmin)

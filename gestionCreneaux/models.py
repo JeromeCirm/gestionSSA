@@ -29,11 +29,10 @@ class Evenement(models.Model):
     fin=models.TimeField(null=True,blank=True,default=None)
     nb_terrains=models.IntegerField(null=True,blank=True,default=4)   # les terrains souhaités
     nb_terrains_occupes=models.IntegerField(null=True,blank=True,default=4)  # la réalité !
-    code_couleur=models.IntegerField(null=True,blank=True,default=None)  # correspond à une constante définie dans setting 
+    css=models.CharField(max_length=40)  # correspond à la classe css à appliquer à l'évènement
     avec_inscription=models.BooleanField(default=False,blank=True)
-    besoin_staff=models.CharField(max_length=40,null=True,blank=True,default="1") # décrit les besoins en staff, la première est le staff d'ouverture : si 0, cela annule la gestion automatique de ouvert/en_attente
-    gestion_staff=models.CharField(max_length=40,null=True,blank=True,default="0") # décrit le staff inscrit pour aider
-    ouvert=models.BooleanField(null=True,default=False,blank=True) # indique si le créneau est ouvert ou juste en prevision
+    inscrits=models.IntegerField(null=True,blank=True,default=0)
+    gestionnaires=models.IntegerField(null=True,blank=True,default=0) #-1 pour indiquer une ouverture sans staff
     prioritaire=models.BooleanField(null=True,default=False,blank=True) # prioritaire pour les terrains sur les autres créneaux
     def __str__(self):
         return "type : "+str(self.type)+", "+self.nom+",id "+str(self.pk)+",jour : "+str(self.jour)+",debut : "+str(self.debut)+",fin : "+str(self.fin)
@@ -61,3 +60,8 @@ class Sportive(models.Model):
     date_resolution=models.DateField(null=True,blank=True,default=None)
     def __str__(self):
         return "id "+str(self.pk)+",debut : "+str(self.debut)+",fin : "+str(self.deadline)+", "+str(self.tournoi)+", "+self.texte
+    
+class Inscription(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    event=models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    role=models.IntegerField(null=True,blank=True,default=0)

@@ -1,0 +1,13 @@
+gérer le menu sticky  :
+  * menu sticky ou non ? gérer la rustine
+  * contentAuto empêche l'affichage du nom de la case : le récupérer ?
+  * cf scroll dans jeulibre.html à gérer
+
+titre en vue "month"
+
+vérifier les swipe sur tous les tel : passer à hammerjs sinon ?
+swipe 3j : autoriser 1 jour/2 jours ???
+
+vérifier l'ordre des imports de css js dans l'en-tête
+
+la gonction gestion(user,event) ne gère que le staff classique pour l'instant.
