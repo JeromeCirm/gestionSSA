@@ -26,9 +26,21 @@ except:
     pass
 
 # les constantes pour indiquer le type d'évenement
-EVENT_JEULIBRE=1
-EVENT_ENTRAINEMENT=2
-EVENT_TOURNOI=3
+EVENT_JEULIBRE=0
+EVENT_ENTRAINEMENT=1
+EVENT_TOURNOI=2
+EVENT_ENTRAINEMENT_A_VALIDER=3
+# idem mais juste pour faciliter la création de créneau : transformé en autre event ensuite : on ne garde que le modulo 100
+EVENT_JEULIBRE_ADHERENTS=100 # devient EVENT_JEULIBRE
+# dictionnaire associé avec nom et classe CSS en mode classique/avec inscription
+# titre et description pré-remplissent le formulaire de création
+typecreneau={
+    EVENT_JEULIBRE : { "nom" : "jeu libre", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "séance de jeu libre ouverte à tout le monde", "descriptionins" : "séance de jeu libre ouverte sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
+    EVENT_ENTRAINEMENT : { "nom" : "entrainement", "css" : "event-entrainement","cssins" : "event-entrainement","titre" : "entrainement", "description" : "séance d'entrainement", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
+    EVENT_TOURNOI : { "nom" : "tournoi", "css" : "event-tournoi","cssins" : "event-tournoi","titre" : "tournoi", "description" : "tournoi : venez encourager les équipes. Inscription au tournoi sur le site du BVS", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
+    EVENT_ENTRAINEMENT_A_VALIDER : { "nom" : "entrainement à valider", "css" : "event-entrainement","cssins" : "event-entrainement","titre" : "entrainement", "description" : "entrainement", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
+    EVENT_JEULIBRE_ADHERENTS : { "nom" : "jeu libre adhérents", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "séance de jeu libre réservée aux adhérent(e)s", "descriptionins" : "séance de jeu libre réservée aux adhérent(e)s et sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
+}
 
 # les constantes pour indiquer les rôles 
 ROLE_INSCRIT=0

@@ -26,3 +26,9 @@ def creation_tournoi(type,categorie,ladate,events,ouvert=True,referents=[]):
     Sportive(texte="resultats à rentrer",tournoi=obj,debut=ladate+datetime.timedelta(days=0),deadline=ladate+datetime.timedelta(days=3)).save()
     Sportive(texte="prize money à distribuer",tournoi=obj,debut=ladate+datetime.timedelta(days=0),deadline=ladate+datetime.timedelta(days=15)).save()
     Sportive(texte="mail aux participants",tournoi=obj,debut=ladate+datetime.timedelta(days=-7),deadline=ladate+datetime.timedelta(days=-3)).save()
+
+    def gestion_suppression(id):
+        pass
+
+    def gestion_ajout(id):
+        pass

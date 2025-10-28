@@ -68,12 +68,13 @@ def lecture_inscription(user,debut,fin=None,types=None):
         res[x.event.id].append(x.role)
     return res
 
-def preparation_creneaux(user,creneaux,inscriptions):
+def preparation_creneaux(user,creneaux,inscriptions,modifiables):
     # création d'une liste d'event pour FullCalendar à partir de creneaux
     res=[]
-    gestionnaire=gestion(user)
+    gestionnaire=gestion(user)  # à gérer par event éventuellement ? staff pour l'instant
     for x in creneaux:
         dico={}
+        dico["id"]=x.id
         dico["title"]=x.nom
         # format YYYY-MM-DDTHH:MM:SS,   ex : 2025-10-25T09:00:00
         dico["start"]=f"{x.jour.year:04d}-{x.jour.month:02d}-{x.jour.day:02d}T{x.debut.hour:02d}:{x.debut.minute:02d}:00"
@@ -83,27 +84,29 @@ def preparation_creneaux(user,creneaux,inscriptions):
             dico["classNames"]=['event-enattente']
         else:
             dico["classNames"]=[x.css]
-        dico["id"]=x.id
-        # le contenu du corps du modal lors du click sur l'event
-        dico["body"]=x.description+f"<br>{x.nb_terrains_occupes} terrains disponibles, {x.gestionnaires} gestionnaires, id: {x.id}"
-        # faire apparaitre le bouton d'inscription ? oui si non vide
-        if x.gestionnaires!=-1:
-            if gestionnaire:
-                # bouton pour gestionnaire
-                if (ROLE_INSCRIT not in inscriptions[x.id]) or (ROLE_STAFF not in inscriptions[x.id]): 
+        # faire apparaitre le bouton d'inscription ?
+        if (x.avec_inscription and x.gestionnaires!=0):
+            if (ROLE_INSCRIT not in inscriptions[x.id]) or (gestionnaire and x.gestionnaires!=-1 and (ROLE_STAFF not in inscriptions[x.id])): 
                     dico["inscription"]="s'inscrire"
                     dico["cmd"]=1
-                else:
+            else:
                     dico["inscription"]="se désinscrire"
                     dico["cmd"]=0
-            elif (x.avec_inscription and x.gestionnaires!=0):
-                # bouton pour simple utilisateur
-                if ROLE_INSCRIT in inscriptions[x.id]:
-                    dico["inscription"]="se désinscrire"
-                    dico["cmd"]=0
-                else:
+        elif gestionnaire and x.gestionnaires!=-1:
+            if ROLE_STAFF not in inscriptions[x.id]: 
                     dico["inscription"]="s'inscrire"
                     dico["cmd"]=1
+            else:
+                    dico["inscription"]="se désinscrire"
+                    dico["cmd"]=0
+        # on peut modifier le créneau ?
+        dico["creneaux_modifiable"]=x.type in modifiables
+        # les champs à afficher/utiles pour la modif
+        dico["description"]=x.description
+        dico["nb_terrains"]=x.nb_terrains
+        dico["avec_inscription"]=x.avec_inscription
+        dico["ouvert"]=x.gestionnaires==-1
+        dico["type"]=x.type
         res.append(dico)
     return res
 
@@ -132,8 +135,24 @@ def desinscription(user,id):
     liste=Inscription.objects.filter(user=user,event=event)
     if len(liste)>0:
         liste.delete()
-        event.gestionnaires=len(Inscription.objects.filter(event=event,role=ROLE_STAFF))
+        if event.gestionnaires!=-1:
+            event.gestionnaires=len(Inscription.objects.filter(event=event,role=ROLE_STAFF))
         event.inscrits=len(Inscription.objects.filter(event=event,role=ROLE_INSCRIT))
         event.save()
         return True
     return False
+
+def type_event_modifiable(user):
+    # retourne la liste des créneaux que la personne peut créer
+    res=[]
+    for x in user.groups.all():
+        if x==groupe_creation_jeulibre:
+            res.append(EVENT_JEULIBRE)
+            res.append(EVENT_JEULIBRE_ADHERENTS)
+        if x==groupe_creation_entrainement:
+            res.append(EVENT_ENTRAINEMENT)
+        if x==groupe_creation_tournois:
+            res.append(EVENT_TOURNOI)
+        if x==groupe_creation_entrainement_avalider:
+            res.append(EVENT_ENTRAINEMENT_A_VALIDER)
+    return res

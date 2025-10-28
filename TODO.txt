@@ -11,3 +11,10 @@ swipe 3j : autoriser 1 jour/2 jours ???
 vérifier l'ordre des imports de css js dans l'en-tête
 
 la gonction gestion(user,event) ne gère que le staff classique pour l'instant.
+
+création de créneau quand click sur existant
+
+bootstrap modal : gérer la taille sur petit écrant : croix de fermeture en haut à gauche, boutons sur deux lignes
+
+creation de créneau : vérifier end>debut+1
+gerer la création/suppression en lien avec le nombre de terrains.

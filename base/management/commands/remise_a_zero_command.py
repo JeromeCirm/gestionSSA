@@ -69,7 +69,7 @@ class Command(BaseCommand):
             ["ce",["creation_entrainement"]],
             ["cea",["creation_entrainement_avalider"]],
             ["ve",["validation_entrainement"]],
-            ["ad",["admin"]],
+            ["ad",["admin","creation_jeulibre","creation_sportive","creation_entrainement","creation_entrainement_avalider","validation_entrainement"]],
             ]:
             user=creation_utilisateur(login,"","","",en_attente_confirmation=False)
             for x in groupes:

@@ -8,6 +8,9 @@
   top: 58px;
 }
 
+span { 
+  white-space: nowrap;
+}
 .event-jeulibre {
   background-color : green;
 }
@@ -18,6 +21,10 @@
 
 .event-jeulibreinscription {
   background-color : blue;
+}
+
+.event-entrainement {
+  background-color : plum;
 }
 
 .event-enattente {
@@ -55,8 +62,8 @@
         <h4 id="modal_titre" class="modal-title w-100 font-weight-bold"></h4>
       </div>
       <div id="modalBody" class="modal-body mx-3"></div>
-      <div class="modal-footer d-flex justify-content-center">
- {% if admin %}  <button class="btn btn-success" id="bouton-modifier" data-dismiss="modal"> Modifier le créneau </button> {% endif%}
+      <div class="modal-footer d-flex justify-content-center"> {% if modifiables %}
+  <button class="btn btn-success" id="bouton-modifier" data-dismiss="modal"> Modifier le créneau </button>  {% endif %}
         <button class="btn btn-success" id="bouton-inscription" data-dismiss="modal"> </button>
         <button type="button" class="btn btn-danger" data-dismiss="modal"> Fermer </button>
       </div>
@@ -65,17 +72,49 @@
 </div>
 
 
-{% if admin %}
+{% if modifiables %}
 <div class="modal fade" id="myModalAd" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 id="modal_titreAd" class="modal-title w-100 font-weight-bold">Création de créneau</h4>
+        <h4 id="modal_titreAd" class="modal-title w-100 font-weight-bold"></h4>
       </div>
-      <div id="modalBodyAdbis" class="modal-body mx-3"></div>
-      <div id="modalBodyAd" class="modal-body mx-3"></div>
+      <div class="md-form mx-3">
+            <span><i class="fas fa-lock prefix grey-text"></i>
+            <label for="modal_date"> jour : </label>
+            <input id="modal_date" type="date"></span>
+            <span><i class="fas fa-lock prefix grey-text"></i>
+            <label for="modal_debut"> début : </label>
+            <input id="modal_debut" type="time"></span>
+            <span><i class="fas fa-lock prefix grey-text"></i>
+            <label for="modal_fin"> fin : </label>
+            <input id="modal_fin" type="time"></span>
+      </div>
+
+      <div  class="modal-body mx-3">
+        <select id="modal_typecreneau" name="typecreneau" onchange="ajuste_titre()">
+    {% for val,dico in typecreneau.items %}      <option value="{{ val }}" data-titre="{{ dico.titre }}" data-desc="{{ dico.description }}" data-descins="{{ dico.descriptionins }}" data-inscription="{{ dico.inscription }}" data-ouvert="{{ dico.ouvert }}">{{ dico.nom }}</option> {% endfor %}
+        </select>        
+            <span><i class="fas fa-lock prefix grey-text"></i>
+            <label for="modal_nb_terrains">  terrains : </label>
+            <input id="modal_nb_terrains" type="number" style="width : 2.5em" value="4" min="1" max="4"></span>
+      </div>
+      <div  class="md-form mx-3">
+          <label for="creneau_titre">  titre : </label>
+          <input id="creneau_titre" type="text" size="10">
+      </div>
+      <div class="modal-body">
+          <label for="creneau_description">  description : </label>
+            <textarea id="creneau_description" class="form-control col-xs-12"></textarea>
+      </div>
+      <div class="md-form mx-3">
+        <label><input type="checkbox" id="checkboxInscription" name="choix" value="avec_inscription" onchange="ajuste_css()"> avec inscription</label><br>
+        <label><input type="checkbox" id="checkboxOuvert" name="choix" value="ouvert"> ouvert par défaut</label><br>
+      </div>
+
       <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-success" id="bouton-creationAd" data-dismiss="modal"> Créer le créneau</button>
+        <button class="btn btn-success" id="bouton-suppressionAd" data-dismiss="modal"></button>
+        <button class="btn btn-success" id="bouton-creationAd" data-dismiss="modal"></button>
         <button type="button" class="btn btn-danger" data-dismiss="modal"> Fermer </button>
       </div>
     </div>
@@ -86,15 +125,75 @@
 <script>
   "use strict";
   var calendar ;
-   function clickbutton(id,cmd) { 
+{% if modifiables %}
+  var select = document.getElementById('modal_typecreneau')
+  var selectTitre = document.getElementById('creneau_titre')
+  var selectDesc = document.getElementById('creneau_description')
+  var checkboxInscription = document.getElementById('checkboxInscription');
+  var checkboxOuvert = document.getElementById('checkboxOuvert');
+  var modal_nb_terrains = document.getElementById('modal_nb_terrains')
+{% endif %}
+
+  function plusdeux(txt) {
+      // ajout de 2h
+      var x=parseInt(txt)+2
+      if (x<10) {
+        return "0"+x.toString()+":00"
+      }
+      if (x<24) {
+        return x.toString()+":00"
+      }
+      return "23:59"
+    }
+
+  function clickbutton(id,cmd) { 
         api_call("/gestionCreneaux/click",{"id" : id,"cmd" : cmd},function (res) { 
           calendar.refetchEvents();})
       }
-      {% if admin%}
-    function creation() {
-        api_call("/gestionAdmin/creation",{"debut" : $('#modalBodyAdbis').text()},function (res) { 
+
+    function formatDateYYYYMMDD(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2,'0');
+      const day = String(date.getDate()).padStart(2,'0');
+      return `${year}-${month}-${day}`;
+    }  
+
+    function formatTimeHHMM(date) {
+      const hour = String(date.getHours()).padStart(2,'0');
+      const minute = String(date.getMinutes()).padStart(2,'0');
+      return `${hour}:${minute}`;
+    }  
+      {% if modifiables%}
+    function creationmodification(id=-1) { 
+       var checked = document.querySelectorAll('input[name="choix"]:checked');
+       var options = Array.from(checked).map(checkbox => checkbox.value);
+        api_call("/gestionAdmin/creation_modification",{"date" : $('#modal_date').val(),"debut" : $('#modal_debut').val(),"fin" : $('#modal_fin').val(), "type" : $('#modal_typecreneau').val(),"options" : JSON.stringify(options), "nb_terrains" : $('#modal_nb_terrains').val(),"titre" : selectTitre.value, "description" : selectDesc.value,"id" : id},function (res) { 
           calendar.refetchEvents();})
-    }{% endif %}
+    }
+
+    function supprimer(id) {
+        api_call("/gestionAdmin/suppression",{"id" : id},function (res) { 
+          calendar.refetchEvents();})
+    }
+
+    function ajuste_css() {
+      var option = select.options[select.selectedIndex].dataset;
+      if (checkboxInscription.checked) {
+        selectDesc.value=option["descins"]
+      } else {
+        selectDesc.value=option["desc"]
+      }
+    }
+
+    function ajuste_titre() {
+      var option = select.options[select.selectedIndex].dataset;
+      selectTitre.value=option["titre"]
+      checkboxInscription.checked=(option["inscription"]=='True')
+      checkboxOuvert.checked=(option["ouvert"]=='True')
+      ajuste_css()
+    }
+
+  {% endif %}
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
@@ -129,24 +228,47 @@
             allDaySlot : false,
             slotMinTime : "08:00:00",
             //scrollTime : "11:00:00",   // non utilisé avec contenHeight auto ???
-            eventClick: function(info) {
+            eventClick: function(info) { 
               $('#modal_titre').html(info.event.title);
-              $('#modalBody').html(info.event.extendedProps.body);
+              $('#modalBody').html(info.event.extendedProps.description+'<BR>'+info.event.extendedProps.nb_terrains.toString()+' terrains disponibles');
               if (info.event.extendedProps.inscription) {
                 $('#bouton-inscription').text(info.event.extendedProps.inscription);
                 $('#bouton-inscription').attr('onclick','clickbutton('+info.event.id.toString()+','+info.event.extendedProps.cmd+')')
                 $('#bouton-inscription').show();
               } else {
                 $('#bouton-inscription').hide()
-              } {% if admin %}
-                $('#bouton-modifier').attr('onclick','alert("créneau '+info.event.id.toString()+' à modifier")')
-                {% endif %}
+              } {% if modifiables %}
+              if (info.event.extendedProps.creneaux_modifiable) {
+                $('#modal_titreAd').text("Modification de créneaux");
+                $('#bouton-creationAd').text("modifier");
+                $('#bouton-creationAd').attr('onclick','creationmodification('+info.event.id.toString()+')')
+                $('#bouton-suppressionAd').text("supprimer");
+                $('#bouton-suppressionAd').attr('onclick','supprimer('+info.event.id.toString()+')')
+                $('#bouton-suppressionAd').show()
+                $('#modal_date').val(formatDateYYYYMMDD(info.event.start));
+                $('#modal_debut').val(formatTimeHHMM(info.event.start));
+                $('#modal_fin').val(formatTimeHHMM(info.event.end));
+                selectTitre.value=info.event.title;
+                select.value=info.event.extendedProps.type;
+                selectDesc.value=info.event.extendedProps.description;
+                modal_nb_terrains.value=info.event.extendedProps.nb_terrains;
+                checkboxOuvert.checked=info.event.extendedProps.ouvert;
+                checkboxInscription.checked=info.event.extendedProps.avec_inscription;
+                $('#bouton-modifier').attr('onclick',"$('#myModalAd').modal()")
+                $('#bouton-modifier').show()
+              } else  {
+                $('#bouton-modifier').hide()
+              } {% endif %}
               $('#myModal').modal();
-            },{% if admin %}
+            },{% if modifiables %}
             dateClick: function(info) {
-              $('#modalBodyAd').html("pour la création de créneau pour : "+ info.dateStr+', Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY+', Current view: ' + info.view.type);
-              $('#modalBodyAdbis').html(info.dateStr);
-              $('#bouton-creationAd').attr('onclick','creation()')
+              $('#modal_titreAd').text("Création de créneaux");
+              $('#bouton-creationAd').text("créer");
+              $('#bouton-suppressionAd').hide()
+              $('#modal_date').val(info.dateStr.substring(0,10));
+              $('#modal_debut').val(info.dateStr.substring(11,14)+"00");
+              $('#modal_fin').val(plusdeux(info.dateStr.substring(11,13)));
+              $('#bouton-creationAd').attr('onclick','creationmodification()')
               $('#myModalAd').modal();
             }, {% endif %}
             events: '/gestionCreneaux/events',

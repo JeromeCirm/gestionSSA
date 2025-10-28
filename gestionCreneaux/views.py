@@ -28,7 +28,10 @@ def reglages(request):
 def jeulibre(request,numero,context):
     creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
     inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
-    context={"menu" : menu_navigation(request), "creneaux" : preparation_creneaux(request.user,creneaux,inscriptions),"admin" : groupe_admin in request.user.groups.all()}
+    modifiables=type_event_modifiable(request.user)
+    typecreneau_modifiables={ x : typecreneau[x] for x in typecreneau if x in modifiables}
+    creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
+    context={"menu" : menu_navigation(request), "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables}
     return render(request,'gestionCreneaux/jeulibre.html',context)
 
 def click(request):
@@ -41,11 +44,13 @@ def click(request):
     if modifie:
         creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
         inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
-        response_data["events"]=preparation_creneaux(request.user,creneaux,inscriptions)
+        modifiables=type_event_modifiable(request.user)
+        response_data["events"]=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
     return HttpResponse(json.dumps(response_data), content_type="application/json") 
 
 def events(request):
     creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
     inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
-    tab=preparation_creneaux(request.user,creneaux,inscriptions)
+    modifiables=type_event_modifiable(request.user)
+    tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
     return HttpResponse(json.dumps(tab), content_type="application/json") 
