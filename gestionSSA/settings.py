@@ -87,21 +87,18 @@ WSGI_APPLICATION = 'gestionSSA.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME' : MY_DB_NAME,
-        'USER' : MY_DB_USER,
-        'PASSWORD' : MY_DB_PWD,
-        'HOST' : MY_DB_HOST,
-        'PORT' : MY_DB_PORT,
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': MY_DB_NAME,
+        'USER': MY_DB_USER,
+        'PASSWORD': MY_DB_PWD,
+        'HOST': MY_DB_HOST,   # ou 127.0.0.1 sur certains serveurs
+        'PORT': MY_DB_PORT,
         'OPTIONS': {
-            'client_encoding': 'UTF8',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            #'client_encoding': 'UTF8',
         },
-    }    
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    }
 }
 
 
