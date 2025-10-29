@@ -38,9 +38,9 @@ def click(request):
     response_data={}
     modifie=False
     if request.POST["cmd"]=="0":
-        modifie=desinscription(request.user,request.POST["id"])
+        desinscription(request.user,request.POST["id"])
     elif request.POST["cmd"]=="1":
-        modifie=inscription(request.user,request.POST["id"])
+        inscription(request.user,request.POST["id"])
     if modifie:
         creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
         inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))

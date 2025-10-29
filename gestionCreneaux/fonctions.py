@@ -119,14 +119,14 @@ def inscription(user,id):
     res=False
     if gestion(user,event):
         if event.gestionnaires!=-1 and len(liste.filter(role=ROLE_STAFF))==0:
-            Inscription(user=user,event=event,role=ROLE_STAFF).save()
+            #Inscription(user=user,event=event,role=ROLE_STAFF).save()
             event.gestionnaires=len(Inscription.objects.filter(event=event,role=ROLE_STAFF))
-            event.save()
+            #event.save()
             res=True
     if len(liste.filter(role=ROLE_INSCRIT))==0:
-            Inscription(user=user,event=event,role=ROLE_INSCRIT).save()
+            #Inscription(user=user,event=event,role=ROLE_INSCRIT).save()
             event.inscrits=len(Inscription.objects.filter(event=event,role=ROLE_INSCRIT))
-            event.save() 
+            #event.save() 
             res=True
     return res
 
@@ -134,11 +134,11 @@ def desinscription(user,id):
     event=Evenement.objects.get(id=id)
     liste=Inscription.objects.filter(user=user,event=event)
     if len(liste)>0:
-        liste.delete()
+        #liste.delete()
         if event.gestionnaires!=-1:
             event.gestionnaires=len(Inscription.objects.filter(event=event,role=ROLE_STAFF))
         event.inscrits=len(Inscription.objects.filter(event=event,role=ROLE_INSCRIT))
-        event.save()
+        #event.save()
         return True
     return False
 
