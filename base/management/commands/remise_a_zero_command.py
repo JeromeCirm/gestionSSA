@@ -101,7 +101,8 @@ class Command(BaseCommand):
                 css='event-jeulibreinscription'
             else:
                 css='event-jeulibre'
-            bulk.append(Evenement(type=EVENT_JEULIBRE,nom=nom,description=desc,jour=date+datetime.timedelta(days=decalage),debut=datetime.time(hour=debut),fin=datetime.time(hour=fin),nb_terrains=nb_terrains,avec_inscription=inscription,css=css))
+                for x in range(1000):
+                    bulk.append(Evenement(type=EVENT_JEULIBRE,nom=nom,description=desc,jour=date+datetime.timedelta(days=decalage+x),debut=datetime.time(hour=debut),fin=datetime.time(hour=fin),nb_terrains=nb_terrains,avec_inscription=inscription,css=css))
         Evenement.objects.bulk_create(bulk)
 
         creation_tournoi("S3","X",date,events=[[0,9,17,4,""]])
