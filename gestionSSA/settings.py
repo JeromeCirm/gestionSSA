@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'gestionSSA.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': MY_DB_ENGINE,
         'NAME': MY_DB_NAME,
         'USER': MY_DB_USER,
         'PASSWORD': MY_DB_PWD,
