@@ -22,14 +22,14 @@ class Evenement(models.Model):
     #  %y/%m/%d %H:%M	2025-10-25 11:44
     #
     type=models.IntegerField(null=True,blank=True,default=None)   # correspond à une constante définie dans setting
-    nom=models.CharField(max_length=40) # nom court pour la vue , indispensable
-    description=models.CharField(max_length=100,null=True,blank=True,default="") # nom plus long pour la vue journalière
+    nom=models.TextField(null=True,blank=True,default="") # nom court pour la vue , indispensable
+    description=models.TextField(null=True,blank=True,default="") # nom plus long pour la vue journalière
     jour=models.DateField(null=True,blank=True,default=None) 
     debut=models.TimeField(null=True,blank=True,default=None)
     fin=models.TimeField(null=True,blank=True,default=None)
     nb_terrains=models.IntegerField(null=True,blank=True,default=4)   # les terrains souhaités
     nb_terrains_occupes=models.IntegerField(null=True,blank=True,default=4)  # la réalité !
-    css=models.CharField(max_length=40)  # correspond à la classe css à appliquer à l'évènement
+    css=models.TextField(null=True,blank=True,default="")  # correspond à la classe css à appliquer à l'évènement
     avec_inscription=models.BooleanField(default=False,blank=True)
     inscrits=models.IntegerField(null=True,blank=True,default=0)
     gestionnaires=models.IntegerField(null=True,blank=True,default=0) #-1 pour indiquer une ouverture sans staff
@@ -38,8 +38,8 @@ class Evenement(models.Model):
         return "type : "+str(self.type)+", "+self.nom+",id "+str(self.pk)+",jour : "+str(self.jour)+",debut : "+str(self.debut)+",fin : "+str(self.fin)
 
 class Tournoi(models.Model):
-    type=models.CharField(max_length=40) # S1, S2, jeunes, championnat mixte
-    categorie=models.CharField(max_length=40) # M,F,X,parents_enfant
+    type=models.TextField(null=True,blank=True,default="") # S1, S2, jeunes, championnat mixte
+    categorie=models.TextField(null=True,blank=True,default="") # M,F,X,parents_enfant
     referents=models.ManyToManyField(User,blank=True) # liste de référents
     declare=models.BooleanField(null=True,default=False,blank=True)
     inscriptions_closes=models.BooleanField(null=True,default=False,blank=True)
@@ -51,7 +51,7 @@ class Tournoi(models.Model):
         return self.type+" "+self.categorie+",id "+str(self.pk)
 
 class Sportive(models.Model):
-    texte=models.CharField(max_length=200) # description de l'item
+    texte=models.TextField(null=True,blank=True,default="") # description de l'item
     event=models.ManyToManyField(Evenement, blank=True) # liste d'evenements associés si c'est pertinent
     tournoi=models.ForeignKey(Tournoi, on_delete=models.CASCADE) # idem pour un tournoi
     debut=models.DateField(null=True,blank=True,default=None) # date d'apparition dans la liste

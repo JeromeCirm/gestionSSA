@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import locale
 locale.setlocale(category=locale.LC_ALL,locale='fr_FR.UTF-8')
+try:
+    from .settings_perso import *
+except:
+    from .settings_modele import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+j#37759i-+339(z!s5+!*kjo&w2knbhif8s45s2a(59#w@$ra'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = MY_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = MY_ALLOWED_HOSTS
 
 
 # Application definition
@@ -83,17 +87,21 @@ WSGI_APPLICATION = 'gestionSSA.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "OPTIONS": {
-    #         "service": "my_service",
-    #         "passfile": ".my_pgpass",
-    #     },
-    # }    
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME' : MY_DB_NAME,
+        'USER' : MY_DB_USER,
+        'PASSWORD' : MY_DB_PWD,
+        'HOST' : MY_DB_HOST,
+        'PORT' : MY_DB_PORT,
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
+    }    
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 
@@ -131,7 +139,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = MY_STATIC_URL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

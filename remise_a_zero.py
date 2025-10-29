@@ -5,6 +5,8 @@
 
 import os
 import shutil
+from django.db import connection
+
 
 for x in ["gestionSSA","base","gestionAdmin","gestionCreneaux","staff"]:
     path=x+"/migrations"
