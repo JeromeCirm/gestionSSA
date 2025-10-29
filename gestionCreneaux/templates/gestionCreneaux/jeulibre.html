@@ -146,9 +146,9 @@ span {
       return "23:59"
     }
 
-  function clickbutton(id,cmd) { 
-        api_call("/gestionCreneaux/click",{"id" : id,"cmd" : cmd},function (res) { 
-          calendar.refetchEvents();})
+  function clickbutton(id,cmd) { var tpsa=performance.now();
+        api_call("/gestionCreneaux/click",{"id" : id,"cmd" : cmd},function (res) { var tpsb=performance.now();
+          calendar.refetchEvents(); console.log(tpsb-tpsa,performance.now()-tpsb)})
       }
 
     function formatDateYYYYMMDD(date) {
@@ -164,11 +164,11 @@ span {
       return `${hour}:${minute}`;
     }  
       {% if modifiables%}
-    function creationmodification(id=-1) { 
+    function creationmodification(id=-1) { var tpsa=performance.now();
        var checked = document.querySelectorAll('input[name="choix"]:checked');
        var options = Array.from(checked).map(checkbox => checkbox.value);
-        api_call("/gestionAdmin/creation_modification",{"date" : $('#modal_date').val(),"debut" : $('#modal_debut').val(),"fin" : $('#modal_fin').val(), "type" : $('#modal_typecreneau').val(),"options" : JSON.stringify(options), "nb_terrains" : $('#modal_nb_terrains').val(),"titre" : selectTitre.value, "description" : selectDesc.value,"id" : id},function (res) { 
-          calendar.refetchEvents();})
+        api_call("/gestionAdmin/creation_modification",{"date" : $('#modal_date').val(),"debut" : $('#modal_debut').val(),"fin" : $('#modal_fin').val(), "type" : $('#modal_typecreneau').val(),"options" : JSON.stringify(options), "nb_terrains" : $('#modal_nb_terrains').val(),"titre" : selectTitre.value, "description" : selectDesc.value,"id" : id},function (res) { var tpsb=performance.now();
+          calendar.refetchEvents();console.log(tpsb-tpsa,performance.now()-tpsb)})
     }
 
     function supprimer(id) {
