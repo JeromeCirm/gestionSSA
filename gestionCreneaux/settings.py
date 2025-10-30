@@ -1,4 +1,4 @@
-# premier groupe : pour autoriser un créneau pour tout le monde
+
 from django.contrib.auth.models import Group
 
 try:  # pour ne pas bloquer lors de la réinitialisation

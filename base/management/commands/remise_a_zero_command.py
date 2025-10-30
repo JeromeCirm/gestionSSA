@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group,User
 import datetime
-from gestionCreneaux.models import Menu,Evenement
+from gestionCreneaux.models import Menu,Evenement,Inscription
 from base.fonctions import creation_utilisateur
 from gestionCreneaux.settings import *
 from gestionAdmin.fonctions import creation_tournoi
+from gestionCreneaux.fonctions import inscription
 
 class Command(BaseCommand):
     help = 'Adds a user to django'
@@ -69,7 +70,7 @@ class Command(BaseCommand):
             ["ce",["creation_entrainement"]],
             ["cea",["creation_entrainement_avalider"]],
             ["ve",["validation_entrainement"]],
-            ["ad",["admin","creation_jeulibre","creation_sportive","creation_entrainement","creation_entrainement_avalider","validation_entrainement"]],
+            ["ad",["admin","staff","creation_jeulibre","creation_sportive","creation_entrainement","creation_entrainement_avalider","validation_entrainement"]],
             ]:
             user=creation_utilisateur(login,"","","",en_attente_confirmation=False)
             for x in groupes:
@@ -78,35 +79,35 @@ class Command(BaseCommand):
         
         ## Quelques créneaux pour voir le site en action (2h): 
         liste=[
-            #nom,description, decalage de jour, heure début, terrains, inscription
-            ["JL1","",1,12,14,4,False],
-            ["JL2","",1,17,19,4,True],
-            ["JL3","",3,12,14,4,False],
-            ["JL3b","",3,13,14,4,False],
-            ["JL4b","",3,18,19,4,True],
-            ["JL4","",3,17,19,4,True],
-            ["JL3B","",3,9,10,4,False],
-            ["JL4B","",3,11,12,4,True],
-            ["JL5","",-1,12,14,4,False],
-            ["JL6","",1,15,17,2,False],
-            ["JL7","",8,12,14,4,False],
-            ["JL8","",8,17,19,4,True],
-            ["JL9","",40,12,14,4,False],
+            #nom,description, decalage de jour, heure début, terrains, avec inscription,gestionnaires, inscrits
+            ["JL1","",1,12,14,4,False,0,["st1"]],
+            ["JL2","",1,17,19,4,True,-1,["st1"]],
+            ["JL3","",2,12,14,4,False,-1,[]],
+            ["JL3b","",2,13,14,4,False,0,["st1","st2"]],
+            ["JL4b","",2,18,19,4,True,-1,["st1","st3","sp1"]],
+            ["JL4","",2,17,19,4,True,0,["st1","st2","sp2"]],
+            ["JL3B","",2,9,10,4,False,-1,[]],
+            ["JL4B","",2,11,12,4,True,-1,[]],
+            ["JL5","",-1,12,14,4,False,0,[]],
+            ["JL6","",1,15,17,2,False,0,[]],
+            ["JL7","",8,12,14,4,False,-1,[]],
+            ["JL8","",8,17,19,4,True,0,[]],
+            ["JL9","",40,12,14,4,False,-1,[]],
         ] 
-        bulk=[]
         actu=datetime.datetime.now()
         date=datetime.date(year=actu.year,month=actu.month,day=actu.day)
-        for nom,desc,decalage,debut,fin,nb_terrains,inscription in liste:
-            if inscription:
+        for nom,desc,decalage,debut,fin,nb_terrains,avecinscription,gestionnaires,inscrits in liste:
+            if avecinscription:
                 css='event-jeulibreinscription'
             else:
                 css='event-jeulibre'
-                for x in range(1000):
-                    bulk.append(Evenement(type=EVENT_JEULIBRE,nom=nom,description=desc,jour=date+datetime.timedelta(days=decalage+x),debut=datetime.time(hour=debut),fin=datetime.time(hour=fin),nb_terrains=nb_terrains,avec_inscription=inscription,css=css))
-        Evenement.objects.bulk_create(bulk)
+            ev=Evenement(type=EVENT_JEULIBRE,nom=nom,description=desc,jour=date+datetime.timedelta(days=decalage),debut=datetime.time(hour=debut),fin=datetime.time(hour=fin),nb_terrains=nb_terrains,avec_inscription=avecinscription,css=css,gestionnaires=gestionnaires)
+            ev.save()
+            for x in inscrits:
+                inscription(User.objects.get(username=x),ev.id)
 
         creation_tournoi("S3","X",date,events=[[0,9,17,4,""]])
-        creation_tournoi("S1","X",date+datetime.timedelta(days=-15),events=[[0,9,12,4,"Qualif Poules"],[0,12,17,4, "Qualif Barrages"],[1,9,16,4,"Main Draw"]])
+        creation_tournoi("S1","X",date+datetime.timedelta(days=4),events=[[0,9,12,4,"Qualif Poules"],[0,12,17,4, "Qualif Barrages"],[1,9,16,4,"Main Draw"]])
         creation_tournoi("S2","Jeunes",date+datetime.timedelta(days=8),events=[[0,9,17,4,""]])
 
         ## des éventuels tests ? 

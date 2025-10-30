@@ -4,22 +4,13 @@
 # et un menu permettant d'accéder à l'initialisation 
 
 import os
-import shutil
-from django.db import connection
-
-
-for x in ["gestionSSA","base","gestionAdmin","gestionCreneaux","staff"]:
-    path=x+"/migrations"
-    shutil.rmtree(path, ignore_errors=True)
-    os.mkdir(path)
-    f=open(path+'/__init__.py',"w")
-    f.close()
 
 try:
-    pass
-    os.remove('db.sqlite3')
+    from remise_a_zero_perso import reset_db
 except:
-    pass
+    from remise_a_zero_modele import reset_db
+
+reset_db()
 
 os.system("python manage.py makemigrations")
 os.system("python manage.py migrate")

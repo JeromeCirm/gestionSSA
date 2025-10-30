@@ -6,7 +6,6 @@ from django.shortcuts import render,redirect
 from django.db.models.functions import Lower
 from .models import *
 from .settings import *
-from base.settings import TITRE_SITE
 from base.fonctions import auth
 from gestionSSA.settings import DEBUG
 from collections import defaultdict
@@ -111,6 +110,7 @@ def preparation_creneaux(user,creneaux,inscriptions,modifiables):
     return res
 
 def gestion(user,event=None):
+    groupe_staff=Group.objects.get(name="staff")
     return user.is_authenticated and (groupe_staff in user.groups.all())
 
 def inscription(user,id):
