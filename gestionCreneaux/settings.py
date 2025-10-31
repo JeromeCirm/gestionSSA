@@ -45,3 +45,24 @@ typecreneau={
 # les constantes pour indiquer les rôles 
 ROLE_INSCRIT=0
 ROLE_STAFF=1
+
+# les types par défaut pour un nouvel utilisateur à l'inscription ou pour quelqu'un de déconnecté, 
+# penser  à modifier la fonction de création si on ajoute un réglage
+DEFAULT_TYPES=[EVENT_JEULIBRE,EVENT_TOURNOI]
+DEFAULT_TEL="TimeGridThreeDay"
+DEFAULT_ORDI="timeGridWeek"
+DEFAULT_ENATTENTE=False
+DEFAULT_LIMITE=31
+
+VUES_PROPOSEEES = [
+    {"label" : "1 jour", "nom" : "timeGridDay"},
+    {"label" : "3 jours ", "nom" : "TimeGridThreeDay"},
+    {"label" : "7 jours", "nom" : "timeGridWeek"},
+    {"label" : "1 mois", "nom" : "dayGridMonth"},
+    ]
+
+LIMITES_PROPOSEES= [
+    {"label" : "1 mois", "val" : 31},
+    {"label" : "2 mois", "val" : 61},
+    {"label" : "6 mois", "val" : 183},
+    ]

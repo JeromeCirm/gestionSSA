@@ -7,6 +7,8 @@ import datetime
 from string import digits,ascii_letters
 from re import match
 from random import choice
+from gestionCreneaux.settings import DEFAULT_TYPES, DEFAULT_ORDI, DEFAULT_TEL, DEFAULT_ENATTENTE, DEFAULT_LIMITE
+from gestionCreneaux.models import Reglages
 
 # préfixe pour une "view"
 # n'autorise la view que si l'utilisateur est dans un des groupes de la liste
@@ -165,13 +167,19 @@ def reinitialise_mot_de_passe(request):
     except:
         return {"autorise" : False, "msg":"le lien est invalide"}
 
-def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_attente_confirmation=True,reinitialisation_password=False,admin=False):
+def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_attente_confirmation=True,reinitialisation_password=False,admin=False,types=DEFAULT_TYPES,en_attente=DEFAULT_ENATTENTE):
     new_user=User.objects.create_user(username=login,first_name=prenom,last_name=nom,email=mail,password=password)
     if admin:
         new_user.is_admin=True
         new_user.is_staff=True
         new_user.is_superuser=True
     new_user.save()
+    Reglages(user=new_user,nom="ordi",str=DEFAULT_ORDI).save()
+    Reglages(user=new_user,nom="ordteli",str=DEFAULT_TEL).save()
+    Reglages(user=new_user,nom="enattente",bool=en_attente).save()
+    Reglages(user=new_user,nom="limite",val=DEFAULT_LIMITE).save()
+    for x in types:
+        Reglages(user=new_user,nom="types",val=x).save()
     if en_attente_confirmation:
         le_hash=hash()
         Utilisateur(user=new_user,telephone=telephone,csrf_token=le_hash,en_attente_confirmation=True,date_demande=datetime.datetime.now()).save()

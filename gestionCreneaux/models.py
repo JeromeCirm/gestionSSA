@@ -65,3 +65,17 @@ class Inscription(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     event=models.ForeignKey(Evenement, on_delete=models.CASCADE)
     role=models.IntegerField(null=True,blank=True,default=0)
+
+class Reglages(models.Model):
+    # nom associé à une chaine ou une valeur, selon les besoins
+    # pour l'instant : 
+    # types -> entier
+    # ordi -> str (la vue par défaut)
+    # tel -> str (idem)
+    # enattente -> bool (on regarde les créneaux en attente ?)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    nom=models.TextField(null=True,blank=True,default="") 
+    str=models.TextField(null=True,blank=True,default="") 
+    val=models.IntegerField(null=True,blank=True,default=0)
+    bool=models.BooleanField(null=True,default=False,blank=True)
+

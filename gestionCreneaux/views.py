@@ -1,56 +1,79 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import update_session_auth_hash
 from .fonctions import *
-from gestionAdmin.views import creationcreneaux,gestionsportive
-from staff.views import recapitulatif,inscrits,sportive
 from .menus import *
 import json
 
-@auth(None)
-def menu(request,numero):
-    context={"menu":menu_navigation(request)}
-    context["titresite"]=TITRE_SITE
-    if True : #try:
-        lemenu=Menu.objects.get(pk=numero) 
-        if autorise_menu(request.user,lemenu):
-            nom_fonction=str(lemenu.fonction)
-            if nom_fonction in liste_menus_defaut:
-                return globals()[str(nom_fonction)](request,numero,context)
-        return redirect('/home')
-    #except: 
-        debug('erreur dans la fonction : enlever try except de la fonction menu de views.py')
-        return redirect('/home')
 
 def reglages(request):
-    context={"menu" : menu_navigation(request)}
+    reglages=recupere_reglages(request.user)
+    autorises=types_autorises(request.user)
+    dico={x : {"nom" : typecreneau[x]["nom"], "checked" : x in reglages["types"]} for x in autorises}
+    context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES}
     return render(request,'gestionCreneaux/reglages.html',context)
 
-def jeulibre(request,numero,context):
-    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
-    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
+def aide(request):
+    context={}
+    return render(request,'gestionCreneaux/aide.html',context)
+
+def jeulibre(request):
+    reglages=recupere_reglages(request.user)
+    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
+    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
     modifiables=type_event_modifiable(request.user)
     typecreneau_modifiables={ x : typecreneau[x] for x in typecreneau if x in modifiables}
-    creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
-    context={"menu" : menu_navigation(request), "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables}
+    toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+    creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
+    context={ "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables, "reglages" : reglages, "admin" : is_admin(request.user)}
     return render(request,'gestionCreneaux/jeulibre.html',context)
 
 def click(request):
     response_data={}
-    modifie=False
     if request.POST["cmd"]=="0":
         desinscription(request.user,request.POST["id"])
     elif request.POST["cmd"]=="1":
         inscription(request.user,request.POST["id"])
-    if modifie:
-        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
-        inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
-        modifiables=type_event_modifiable(request.user)
-        response_data["events"]=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
     return HttpResponse(json.dumps(response_data), content_type="application/json") 
 
 def events(request):
-    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7))
-    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7))
+    reglages=recupere_reglages(request.user)
+    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
+    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
     modifiables=type_event_modifiable(request.user)
-    tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables)
+    toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+    tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
     return HttpResponse(json.dumps(tab), content_type="application/json") 
+
+def checkbox(request):
+    Reglages.objects.filter(user=request.user,nom="types",val=request.POST["val"]).delete()
+    if request.POST["status"]=="true":
+        Reglages(user=request.user,nom="types",val=request.POST["val"]).save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def enattente(request):
+    Reglages.objects.filter(user=request.user,nom="enattente").delete()
+    if request.POST["status"]=="true":
+        val=True
+    else:
+        val=False
+    Reglages(user=request.user,nom="enattente",bool=val).save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def ajustevue(request):
+    Reglages.objects.filter(user=request.user,nom=request.POST["key"]).delete()
+    Reglages(user=request.user,nom=request.POST["key"],str=request.POST["val"]).save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def changemdp(request):
+    user=authenticate(request,username=request.user.username,password=request.POST["old"])
+    if user is not None and request.POST["new"]==request.POST["newbis"]: 
+        user.set_password(request.POST["new"])
+        user.save()
+        update_session_auth_hash(request, user)
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def ajustelimite(request):
+    Reglages.objects.filter(user=request.user,nom="limite").delete()
+    Reglages(user=request.user,nom="limite",val=request.POST["val"]).save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 

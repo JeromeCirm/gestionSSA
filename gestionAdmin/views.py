@@ -1,21 +1,10 @@
 from django.shortcuts import render
 from base.fonctions import auth
 from django.http import HttpResponse
-from gestionCreneaux.fonctions import menu_navigation
 import json
 from gestionCreneaux.models import Evenement
 from gestionCreneaux.settings import typecreneau
 from .fonctions import *
-
-@auth(None)
-def creationcreneaux(request,numero,context):
-    context={"menu" : menu_navigation(request)}
-    return render(request,'gestionAdmin/creationcreneaux.html',context)
-
-@auth(None)
-def gestionsportive(request,numero,context):
-    context={"menu" : menu_navigation(request)}
-    return render(request,'gestionAdmin/gestionsportive.html',context)
 
 def creation_modification(request):
     res=[]
@@ -52,3 +41,6 @@ def suppression(request):
     res=[]
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
+def admin(request):
+    context={}
+    return render(request,'gestionAdmin/admin.html',context)

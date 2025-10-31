@@ -3,18 +3,97 @@
 {% block body %}
 {% csrf_token %}
 {% include 'menu.html'%}
-<BR> {% for line in annonce %} <p>{{ line }}</p>{% endfor %}
-{% if information %} {% for line in information %} <p>{{ line }}</p>{% endfor %} {% endif %}<BR>
+<script>
+  function api_call(nom,donnees,retour) {
+            var formData = new FormData();
+            for (x in donnees) {
+              formData.append(x,donnees[x])
+            }
+            csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
+            formData.append('csrfmiddlewaretoken',csrf.value)
+            fetch(nom, {
+              method : 'POST',
+              headers : {
+                'Accept': 'application/json, text/plain, */*',
+                },
+                body: formData
+            }).then(function(res){ return res.json();})
+              .then(function(res){
+                retour(res)
+               })
+                .catch(function(err){ console.log('Erreur requête', err);});
+        }
+</script>
+<div class="modal-dialog" role="document">
+   Liste des créneaux à montrer : 
+    <div class="modal-content">
 
-<fieldset>
-    <legend>Liste des créneaux disponibles : (créneaux sélectionnés en orange)</legend>
-    <div class="creneaux" id="creneaux_general">
+        <div class="md-form mx-3">
+            {% for key,dico in types.items %}
+                <label><input type="checkbox" name="choix"onchange="checkbox(this,{{ key }})" {% if dico.checked %} checked {% endif %}> {{ dico.nom }}</label><br> {% endfor %}
+                <label><input type="checkbox" name="choix" onchange="enattente(this)" {% if reglages.enattente %} checked {% endif %}> créneaux en attente de staff</label><br>
+        </div>
     </div>
-</fieldset>
-
-C'est la page reglages ! 
+</div><br>
+<button class="btn btn-success" id="bouton-mdp" onclick="$('#myModal').modal();") > changer le mot de passe</button><br><br>
+    Vue initiale sur téléphone : 
+    <select id="vuetel" name="vuetel" onchange="ajuste_vue(this,'tel')">
+        {% for x in vues %}
+        <option value="{{ x.nom }}" {% if x.nom == reglages.tel %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
+    </select>  <br><br>
+    Vue initiale sur ordinateur : 
+    <select id="vuetel" name="vuetel" onchange="ajuste_vue(this,'ordi')">
+        {% for x in vues %}
+        <option value="{{ x.nom }}" {% if x.nom == reglages.ordi %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
+    </select>  <br><br>
+    Limiter les créneaux à :
+    <select id="limite" name="limite" onchange="ajuste_limite(this)">
+        {% for x in limites %}
+        <option value="{{ x.val }}" {% if x.val == reglages.limite %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
+    </select> 
+<div class="modal fade" id="myModal" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 id="modal_titre" class="modal-title w-100 font-weight-bold">changement de mot de passe</h4>
+      </div>
+      <div id="modalBody" class="modal-body mx-3">
+            <label for="oldpwd"> ancien mot de passe : </label><br>
+            <input id="oldpwd" type="password" autofocus="True"><br>
+            <label for="newpwd"> nouveau mot de passe : </label><br>
+            <input id="newpwd" type="password"><br>
+            <label for="newpwdbis"> retaper le nouveau mot de passe : </label><br>
+            <input id="newpwdbis" type="password">
+    </div>
+      <div class="modal-footer d-flex justify-content-center"> 
+        <button class="btn btn-success" id="bouton-inscription" data-dismiss="modal" onclick="changer_mdp()"> valider </button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> Fermer </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-    click_creneau(0,false)
+  var oldpwd = document.getElementById('oldpwd')
+  var newpwd = document.getElementById('newpwd')
+  var newpwdbis = document.getElementById('newpwdbis')
+
+    function checkbox(labox,val) {
+        api_call("/gestionCreneaux/checkbox",{"val" : val,"status" : labox.checked},function (res) { })
+    }
+    function enattente(labox) {
+        api_call("/gestionCreneaux/enattente",{"status" : labox.checked},function (res) { })
+    }
+    function ajuste_vue(labox,nom) {
+        api_call("/gestionCreneaux/ajustevue",{"key" : nom, "val" : labox.value},function (res) { })
+    }
+    function changer_mdp(labox,nom) {
+        api_call("/gestionCreneaux/changemdp",{"old" : oldpwd.value, "new" : newpwd.value,"newbis" : newpwdbis.value},function (res) { })
+    }
+    function ajuste_limite(labox) {
+        api_call("/gestionCreneaux/ajustelimite",{"val" : labox.value},function (res) { })
+    }    
 </script>
+
+
 {% endblock body %}

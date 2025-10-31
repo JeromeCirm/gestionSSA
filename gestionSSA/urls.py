@@ -20,9 +20,9 @@ from gestionCreneaux.views import jeulibre
 
 urlpatterns = [
     path("base/", include("base.urls")),
-    path("gestionAdmin/", include("gestionAdmin.urls")),
+    path("gestionAdmin/", include(("gestionAdmin.urls","gestionAdmin"),namespace="gestionAdmin")),
     path("gestionCreneaux/", include("gestionCreneaux.urls")),
-    path("staff/", include("staff.urls")),
+    #path("staff/", include("staff.urls")),
     path('admin/', admin.site.urls),
-    re_path(r'a*', jeulibre,{"numero" : 1,"context": {}},name='home'),    
+    re_path(r'a*', jeulibre , name='home'),    
 ]
