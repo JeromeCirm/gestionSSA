@@ -10,9 +10,6 @@
     </ul>
   <div id="bonjour" class="center">{{ user.username }}  </div>
     <ul id="rightmenu" class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'aide' %}">Aide</a>
-      </li>
       {% if user.is_authenticated %}
   {% if admin %}
       <li class="nav-item">

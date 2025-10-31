@@ -18,3 +18,9 @@ bootstrap modal : gérer la taille sur petit écrant : croix de fermeture en hau
 
 creation de créneau : vérifier end>debut+1
 gerer la création/suppression en lien avec le nombre de terrains.
+
+
+
+en gestion  // inscrit  : virer si pas utile
+connexion si c'est pas le cas.
+largeur du menu sur tel en admin // menu plus petit
