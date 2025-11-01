@@ -103,13 +103,14 @@ def preparation_creneaux(user,creneaux,inscriptions,modifiables,toutes_inscripti
         dico["avec_inscription"]=x.avec_inscription
         s=""
         if gestionnaire:
-            s="<br>en gestion : "
-            for id,role in toutes_inscriptions[x.id]:
-                if role==ROLE_STAFF:
-                    ungestionnaire=User.objects.get(id=id)
-                    s+=ungestionnaire.first_name+' '+ungestionnaire.last_name+' '
-            s+="<br>inscrit(e)s : "
+            if x.gestionnaires!=-1:
+                s="<br>en gestion : "
+                for id,role in toutes_inscriptions[x.id]:
+                    if role==ROLE_STAFF:
+                        ungestionnaire=User.objects.get(id=id)
+                        s+=ungestionnaire.first_name+' '+ungestionnaire.last_name+' '
             if x.avec_inscription:
+                s+="<br>inscrit(e)s : "
                 for id,role  in toutes_inscriptions[x.id]:
                     if role==ROLE_INSCRIT:
                         ungestionnaire=User.objects.get(id=id)
