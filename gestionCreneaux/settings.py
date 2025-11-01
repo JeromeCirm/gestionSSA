@@ -26,6 +26,7 @@ except:
     pass
 
 # les constantes pour indiquer le type d'évenement
+# penser à modifier la fonction type_event_modifiable en cas d'ajout d'event
 EVENT_JEULIBRE=0
 EVENT_ENTRAINEMENT=1
 EVENT_TOURNOI=2

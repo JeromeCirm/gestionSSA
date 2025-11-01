@@ -42,5 +42,26 @@ def suppression(request):
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
 def admin(request):
-    context={}
+    context={ "adherents" : User.objects.all().exclude(is_staff=True)}
     return render(request,'gestionAdmin/admin.html',context)
+
+def recupere_info(request):
+    user=User.objects.get(id=request.POST["id"])
+    res={
+        "id" : user.id,
+        "first_name" : user.first_name ,
+        "last_name" : user.last_name ,
+        "email" : user.email ,
+        "groupes" : [x.name for x in user.groups.all()],
+        "touslesgroupes" : [x.name for x in Group.objects.all().order_by("-name")]
+    }
+    return HttpResponse(json.dumps(res), content_type="application/json") 
+
+def change_info(request):
+    user=User.objects.get(id=request.POST["id"])
+    group_names=json.loads(request.POST["groupes"])
+    lesgroups = Group.objects.filter(name__in=group_names)
+    user.groups.set(lesgroups)    
+    user.save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+

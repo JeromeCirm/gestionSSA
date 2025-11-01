@@ -147,9 +147,13 @@ span {
       return "23:59"
     }
 
+    {% if connecte %}
   function clickbutton(id,cmd) { 
         api_call("/gestionCreneaux/click",{"id" : id,"cmd" : cmd},function (res) { calendar.refetchEvents();})
-      }
+      } {% else %}
+  function clickbutton(id,cmd) { 
+        document.location.href="/base/connexion"; 
+      } {% endif %}
 
     function formatDateYYYYMMDD(date) {
       const year = date.getFullYear();

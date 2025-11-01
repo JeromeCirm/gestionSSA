@@ -35,6 +35,7 @@
         </div>
     </div>
 </div><br>
+<div class="layout__body">
 <button class="btn btn-success" id="bouton-mdp" onclick="$('#myModal').modal();") > changer le mot de passe</button><br><br>
     Vue initiale sur téléphone : 
     <select id="vuetel" name="vuetel" onchange="ajuste_vue(this,'tel')">
@@ -51,6 +52,7 @@
         {% for x in limites %}
         <option value="{{ x.val }}" {% if x.val == reglages.limite %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
     </select> 
+</div>
 <div class="modal fade" id="myModal" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

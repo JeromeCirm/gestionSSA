@@ -4,8 +4,147 @@
 {% csrf_token %}
 {% include 'menu.html'%}
 
+<script>
+  function api_call(nom,donnees,retour) {
+            var formData = new FormData();
+            for (x in donnees) {
+              formData.append(x,donnees[x])
+            }
+            csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
+            formData.append('csrfmiddlewaretoken',csrf.value)
+            fetch(nom, {
+              method : 'POST',
+              headers : {
+                'Accept': 'application/json, text/plain, */*',
+                },
+                body: formData
+            }).then(function(res){ return res.json();})
+              .then(function(res){
+                retour(res)
+               })
+                .catch(function(err){ console.log('Erreur requête', err);});
+        }
+</script>
 
-C'est la page admin ! 
+  <style>
+    #mySelect {
+      width: 200px;
+      height: 100px;
+    }
+  </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+    .form-container {
+      width: 300px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    select {
+      width: 100%;
+      height: 120px;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 8px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .container {
+      display: flex;          /* Active le mode flex */
+      gap: 20px;              /* Espace entre les blocs */
+    }
+
+    .bloc {
+      flex: 1;                /* Chaque bloc prend la même largeur */
+      padding: 20px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+    }
+  </style>
+
+<div class="container">
+    <div class="bloc">
+  <h3>Choix d'utilisateur :</h3>
+
+  <input type="text" id="search" placeholder="Rechercher...">
+  <br><br>
+
+  <select id="mySelect" size="3" onchange="actualise(this)"> {% for x in adherents %}
+    <option value="{{ x.id }}">{{ x.first_name}} {{ x.last_name }}</option> {% endfor %}
+  </select>
+
+</div>
+    <div class="bloc">
+  <div class="form-container">
+    <h3>Modifier l’utilisateur</h3>
+    
+    <input type="text" id="userid" value="" hidden><br>
+    
+    <label for="user">Prénom :</label><br>
+    <input type="text" id="username" value="" disabled><br>
+    
+    <label for="user">Mail :</label><br>
+    <input type="text" id="user_email" value="" disabled><br>
+
+    <label for="groups">Groupes :</label><br>
+    <select id="groups" multiple>
+    </select>
+
+    <button type="button" onclick="saveGroups()">Enregistrer</button>
+  </div>
+    </div>
+  </div>
+   <script>
+    const search = document.getElementById('search');
+    const select = document.getElementById('mySelect');
+    const userid = document.getElementById('userid');
+    const username = document.getElementById('username');
+    const user_email = document.getElementById('user_email');
+    const groups = document.getElementById('groups');
+
+    function actualise(item) {
+        api_call("/gestionAdmin/recupere_info",{ "id" : item.value}, function (res) {
+            username.value=res["first_name"]+" "+res["last_name"];
+            userid.value=res["id"]
+            user_email.value=res["email"];
+            groups.innerHTML=""
+            res["touslesgroupes"].forEach((item) => {
+                const option = document.createElement("option");
+                option.value = item; // valeur interne
+                option.textContent = item;         // texte visible
+                if (res["groupes"].includes(option.value)) {
+                    option.selected=true;
+                }
+                groups.appendChild(option);
+    });
+        })
+    }
+
+    search.addEventListener('keyup', () => {
+      const filter = search.value.toLowerCase();
+      for (let option of select.options) {
+        const text = option.text.toLowerCase();
+        option.style.display = text.includes(filter) ? '' : 'none';
+      }
+    });
+
+    function saveGroups() {
+      const selected = Array.from(groups.selectedOptions).map(o => o.value);
+      console.log(selected)
+      api_call("/gestionAdmin/change_info",{ "id" : userid.value, "groupes" : JSON.stringify(selected)}, function (res) {});
+    }
+  </script>
 
 
 {% endblock body %}
