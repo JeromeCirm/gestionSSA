@@ -21,3 +21,19 @@ gerer la création/suppression en lien avec le nombre de terrains.
 
 
 largeur du menu sur tel en admin // menu plus petit
+
+
+
+créneaux : gris : staff only ou pas ?
+code couleur 
+largeur en fonction du nombre de terrains
+laisser l'heure sur les créneaux ?
+nombre de terrains directement sur le planning
+1 inscrit sur une seule ligne
+
+que faire par défaut pour les créneaux à voir, les créneaux que l'on peut faire apparaitre.
+
+gérer la répétition
+gérer la création quand on clique sur un créneau existant.
+
+menu aide poru les codes couleurs
