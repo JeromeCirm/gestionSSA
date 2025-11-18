@@ -64,7 +64,8 @@ span {
       </div>
       <div id="modalBody" class="modal-body mx-3"></div>
       <div class="modal-footer d-flex justify-content-center"> {% if modifiables %}
-  <button class="btn btn-success" id="bouton-modifier" data-dismiss="modal"> Modifier le créneau </button>  {% endif %}
+  <button class="btn btn-success" id="bouton-creer" data-dismiss="modal"> Créer </button>
+  <button class="btn btn-success" id="bouton-modifier" data-dismiss="modal"> Modifier </button>  {% endif %}
         <button class="btn btn-success" id="bouton-inscription" data-dismiss="modal"> </button>
         <button type="button" class="btn btn-danger" data-dismiss="modal"> Fermer </button>
       </div>
@@ -196,11 +197,20 @@ span {
       ajuste_css()
     }
 
+    function creation() {
+      $('#modal_titreAd').text("Création de créneaux");
+      $('#bouton-creationAd').text("créer");
+      $('#bouton-suppressionAd').hide()
+      $('#bouton-creationAd').attr('onclick','creationmodification()')
+      $('#myModalAd').modal();
+      ajuste_titre();     
+    }
+
   {% endif %}
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    if (screen.width<500) {
+    if (screen.width<600) {
       var myinitialView='{{ reglages.tel }}';
     } else {
       var myinitialView='{{ reglages.ordi }}';
@@ -261,23 +271,21 @@ span {
                 modal_nb_terrains.value=info.event.extendedProps.nb_terrains;
                 checkboxOuvert.checked=info.event.extendedProps.ouvert;
                 checkboxInscription.checked=info.event.extendedProps.avec_inscription;
+                $('#bouton-creer').attr('onclick',"creation();")
+                $('#bouton-creer').show()
                 $('#bouton-modifier').attr('onclick',"$('#myModalAd').modal()")
                 $('#bouton-modifier').show()
               } else  {
                 $('#bouton-modifier').hide()
+                $('#bouton-creer').hide()
               } {% endif %}
               $('#myModal').modal();
             },{% if modifiables %}
             dateClick: function(info) {
-              $('#modal_titreAd').text("Création de créneaux");
-              $('#bouton-creationAd').text("créer");
-              $('#bouton-suppressionAd').hide()
               $('#modal_date').val(info.dateStr.substring(0,10));
               $('#modal_debut').val(info.dateStr.substring(11,14)+"00");
               $('#modal_fin').val(plusdeux(info.dateStr.substring(11,13)));
-              $('#bouton-creationAd').attr('onclick','creationmodification()')
-              $('#myModalAd').modal();
-              ajuste_titre();
+              creation();
             }, {% endif %}
             events : '/gestionCreneaux/events',
     });
@@ -313,7 +321,7 @@ span {
 
     calendar.render();
     //tmp pour la taille de l'écran
-    document.getElementById("rightmenu").insertAdjacentHTML('beforebegin',"  "+screen.width + "x" + screen.height)
+    ///document.getElementById("rightmenu").insertAdjacentHTML('beforebegin',"  "+screen.width + "x" + screen.height)
   });
 
 </script>

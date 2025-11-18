@@ -3,37 +3,29 @@ gérer le menu sticky  :
   * contentAuto empêche l'affichage du nom de la case : le récupérer ?
   * cf scroll dans jeulibre.html à gérer
 
-titre en vue "month"
-
 vérifier les swipe sur tous les tel : passer à hammerjs sinon ?
-swipe 3j : autoriser 1 jour/2 jours ???
 
 vérifier l'ordre des imports de css js dans l'en-tête
 
 la gonction gestion(user,event) ne gère que le staff classique pour l'instant.
 
-création de créneau quand click sur existant
+bootstrap modal : gérer la taille sur petit écran : croix de fermeture en haut à gauche, boutons sur deux lignes
 
-bootstrap modal : gérer la taille sur petit écrant : croix de fermeture en haut à gauche, boutons sur deux lignes
+menu aide pour les codes couleurs, le texte résumé en page principale, etc...
+titre en vue "month", titre, enlever les pastilles : bref revoir
 
-creation de créneau : vérifier end>debut+1
-gerer la création/suppression en lien avec le nombre de terrains.
+************************
 
-
-largeur du menu sur tel en admin // menu plus petit
-
-
+pas de mon ressort : 
 
 créneaux : gris : staff only ou pas ?
-code couleur 
-largeur en fonction du nombre de terrains
-laisser l'heure sur les créneaux ?
-nombre de terrains directement sur le planning
-1 inscrit sur une seule ligne
-
+code couleur
 que faire par défaut pour les créneaux à voir, les créneaux que l'on peut faire apparaitre.
 
-gérer la répétition
-gérer la création quand on clique sur un créneau existant.
+************************
 
-menu aide poru les codes couleurs
+fignoler, mais pas forcément une bonne idée ou en second temps : 
+ 
+gérer la répétition
+gerer la création/suppression en lien avec le nombre de terrains.
+largeur en fonction du nombre de terrains : bof

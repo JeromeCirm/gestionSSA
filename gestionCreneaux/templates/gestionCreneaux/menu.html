@@ -15,6 +15,10 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'gestionAdmin:admin' %}">Admin</a>
       </li>
+  {% else %}
+      <li class="nav-item"> 
+        <a class="nav-link" href="{% url 'aide' %}">Aide</a>
+      </li>
   {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'reglages' %}">Réglages</a>
@@ -22,6 +26,9 @@
       <li class="nav-item">     
         <a class="nav-link" href="{% url 'deconnexion' %}">Déconnexion</a> 
       </li> {% else %}
+      <li class="nav-item"> 
+        <a class="nav-link" href="{% url 'aide' %}">Aide</a>
+      </li>
       <li class="nav-item"> 
         <a class="nav-link" href="{% url 'connexion' %}">Connexion</a>
       </li>

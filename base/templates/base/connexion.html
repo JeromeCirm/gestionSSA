@@ -20,9 +20,9 @@
 
         <button class="login-btn" type="submit">
           Connexion
-        </button><BR><BR> {% if creation %}
+        </button><a href="{% url 'home' %}" class="creation-btn"> retour </a><BR><BR> {% if creation %}
         Pas de compte? Création  <a href="{% url 'creation_compte' %}" class="creation-btn"> ici </a><BR> {% endif %} {% if recuperation %}
-        Mot de passe oublié ?  c'est par <a href="{% url 'recuperation_password' %}" class="creation-btn"> ici </a> {% endif %}
+        Mot de passe oublié ?  <a href="{% url 'recuperation_password' %}" class="creation-btn"> c'est ici </a> {% endif %}
       </form>
     </div>
 

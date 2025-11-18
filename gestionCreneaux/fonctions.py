@@ -69,9 +69,9 @@ def preparation_creneaux(user,creneaux,inscriptions,modifiables,toutes_inscripti
         dico["id"]=x.id
         dico["nom"]=x.nom
         if x.avec_inscription:
-            dico["title"]=x.nom+' : '+str(x.inscrits)+' inscrit(e)s'
+            dico["title"]=x.nom+', '+str(x.inscrits)+' ins, '+str(x.nb_terrains_occupes)+"T"
         else:
-            dico["title"]=x.nom
+            dico["title"]=x.nom+', '+str(x.nb_terrains_occupes)+"T"
         # format YYYY-MM-DDTHH:MM:SS,   ex : 2025-10-25T09:00:00
         dico["start"]=f"{x.jour.year:04d}-{x.jour.month:02d}-{x.jour.day:02d}T{x.debut.hour:02d}:{x.debut.minute:02d}:00"
         dico["end"]=f"{x.jour.year:04d}-{x.jour.month:02d}-{x.jour.day:02d}T{x.fin.hour:02d}:{x.fin.minute:02d}:00"

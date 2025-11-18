@@ -16,7 +16,7 @@ MY_ENVOIE_MAIL = False
 MY_URL_COMPLETE = 'http://127.0.0.1:8000/'
 
 # autorisation creation compte/récupération de mot de passe par mail
-MY_AUTORISE_CREATION = False          # 
+MY_AUTORISE_CREATION = True          # 
 MY_AUTORISE_RECUPERATION = True
 
 # le titre du site
