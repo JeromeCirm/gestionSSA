@@ -3,22 +3,28 @@ from django.contrib.auth import logout,authenticate
 from .fonctions import *
 
 def connexion(request):
-    if request.method=='POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        user=authenticate(request,username=username,password=password)
-        if user is not None: 
-            # on vérifie si le compte a bien été activé
-            try:
-                utilisateur=Utilisateur.objects.get(user=user)
-                if not utilisateur.en_attente_confirmation:
-                    login(request,user)
-                    return redirect('/home')
-                #compte en attente si on arrive ici
-            except:
-                pass
+    msg=""
+    try:
+        if request.method=='POST':
+            msg="erreur d'identification"
+            username=request.POST.get('username')
+            password=request.POST.get('password')
+            user=authenticate(request,username=username,password=password)
+            if user is not None: 
+                # on vérifie si le compte a bien été activé
+                try:
+                    utilisateur=Utilisateur.objects.get(user=user)
+                    if not utilisateur.en_attente_confirmation:
+                        login(request,user)
+                        return redirect('/home')
+                    #compte en attente si on arrive ici
+                except:
+                    msg="compte non activé : lire son mail"
+    except:
+        pass
     context={ "creation" : AUTORISE_CREATION, "recuperation" : AUTORISE_RECUPERATION}
     context["titresite"]=TITRE_SITE
+    context["msg"]=msg
     return render(request,'base/connexion.html',context)
 
 def deconnexion(request):

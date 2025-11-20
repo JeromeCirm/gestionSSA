@@ -61,29 +61,18 @@ def demande_creation_compte(request):
         utilisateurs=Utilisateur.objects.filter(user__username=login)
         if len(utilisateurs)>0:
             return False,"ce login n'est pas disponible"
+        utilisateurs=User.objects.filter(email=mail)
+        if len(utilisateurs)>0:
+            return False,"il y a déjà un compte avec cette adresse mail."
         if not login_autorise(login):
             return False, "ce login contient des caractères interdits. Seuls les chiffres et les lettres (minuscules ou majuscules mais sans accent) sont autorisés"
     except:        
         return False,"Le formulaire est incomplet."
     try:
-        new_user=User.objects.create_user(username=login,first_name=prenom,last_name=nom,email=mail,password=password)
-        new_user.save()
-        le_hash=hash()
-        new_utilisateur=Utilisateur(user=new_user,csrf_token=le_hash,date_demande=datetime.datetime.now(),en_attente_confirmation=True)
-        new_utilisateur.save()
-    except:
-        return False,"erreur lors de la création de compte"
-    try:
-        msg="Bonjour "+prenom+",\n\nVoici le lien pour activer le compte sur le site (valable 7 jours): \n" 
-        msg+=URL_COMPLETE+"validation_compte/"+login+"/"+le_hash
-        msg+="\n\nL'équipe de gestion"   
-        envoie_mail([mail],'inscription site',msg)
+        creation_utilisateur(login,prenom,nom,password,mail=mail,telephone=request.POST["telephone"],en_attente_confirmation=True,reinitialisation_password=False,admin=False,types=DEFAULT_TYPES,en_attente=DEFAULT_ENATTENTE)
         return True,"reussi"
     except:
-        new_user.delete()
-        new_utilisateur.delete()
-        return False,"impossible d'envoyer le mail d'inscription"
-
+        return False,"erreur lors de la création de compte"
 
 # vérifie si on peut activer le compte login.
 # renvoi "reussi" si c'est bon et un message d'erreur sinon
@@ -111,9 +100,6 @@ def envoie_mail_recuperation_mot_de_passe(request):
         user=User.objects.get(username=login,email=mail)
         lehash=hash()
         utilisateur=Utilisateur.objects.get(user=user)
-        if not utilisateur.autorise_modif:
-            # modification de compte non autorisée : on sort
-            return msg
         utilisateur.csrf_token=lehash
         utilisateur.date_demande=datetime.datetime.now()
         utilisateur.reinitialisation_password=True
@@ -121,7 +107,7 @@ def envoie_mail_recuperation_mot_de_passe(request):
         msg_mail="Bonjour "+user.first_name+",\n\n"
         msg_mail+="Une demande de réinitialisation de mail vient d'être envoyé pour ton compte.\n"
         msg_mail+="clique sur ce lien pour changer de mot de passe : "
-        msg_mail+=URL_COMPLETE+"demande_reinitialisation/"+login+"/"+lehash
+        msg_mail+=URL_COMPLETE+"base/demande_reinitialisation/"+login+"/"+lehash
         msg_mail+="\n\nNe pas répondre, mail automatique."
         envoie_mail([mail],'Demande de récupération de compte, site MPSI',msg_mail)
         return msg
@@ -136,7 +122,7 @@ def verifie_lien_reinitialisation(login,lehash):
     try:
         user=User.objects.get(username=login)
         utilisateur=Utilisateur.objects.get(user=user,csrf_token=lehash)
-        if not (utilisateur.reinitialisation_password and utilisateur.autorise_modif):
+        if not (utilisateur.reinitialisation_password):
             return {"autorise" : False, "msg":"le lien est invalide"}
         if utilisateur.date_demande+datetime.timedelta(days=7)<datetime.date.today():
             return {"autorise" : False, "msg":"le lien a expiré"}
@@ -151,9 +137,6 @@ def reinitialise_mot_de_passe(request):
         newpassword=request.POST['password']
         user=User.objects.get(username=username)
         utilisateur=Utilisateur.objects.get(user=user,csrf_token=lehash)
-        if not utilisateur.autorise_modif:
-            # compte pour lequel toute modif est impossible
-            return {"autorise" : False, "msg" : "action impossible"}
         if not utilisateur.reinitialisation_password:
             return {"autorise" : False, "msg":"le lien est invalide"}
         if utilisateur.date_demande+datetime.timedelta(days=7)<datetime.date.today():
@@ -184,7 +167,7 @@ def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_atten
         le_hash=hash()
         Utilisateur(user=new_user,telephone=telephone,csrf_token=le_hash,en_attente_confirmation=True,date_demande=datetime.datetime.now()).save()
         msg="Bonjour "+prenom+",\n\nVoici le lien pour activer le compte sur le site SSA (valable 7 jours): \n" 
-        msg+=MY_URL_COMPLETE+"validation_compte/"+login+"/"+le_hash
+        msg+=MY_URL_COMPLETE+"base/validation_compte/"+login+"/"+le_hash
         msg+="\n\nL'équipe SSA"    
         envoie_mail([mail],'inscription site SSA',msg)
     else:

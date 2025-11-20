@@ -12,7 +12,7 @@ la gonction gestion(user,event) ne gère que le staff classique pour l'instant.
 bootstrap modal : gérer la taille sur petit écran : croix de fermeture en haut à gauche, boutons sur deux lignes
 
 menu aide pour les codes couleurs, le texte résumé en page principale, etc...
-titre en vue "month", titre, enlever les pastilles : bref revoir
+
 
 ************************
 

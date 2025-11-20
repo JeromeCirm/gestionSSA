@@ -28,9 +28,18 @@ span {
   background-color : gray;
 }
 
+.fc-daygrid-event-dot {
+    display: none !important;
+}
+
 #calendar {
   padding : 3px;
 }
+
+a {
+  color : black;
+}
+
 
 </style>
 <script>
@@ -219,11 +228,35 @@ span {
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
             headerToolbar: {
                 left: 'prev,next',
+                  center: 'title',
                 right: 'timeGridDay,TimeGridThreeDay,timeGridWeek,dayGridMonth'
+            },
+            datesSet: function(info) {
+              // Exemple : afficher "Mois : Novembre 2025"
+              const newTitle = info.start.toLocaleDateString('fr-FR', {
+                month: "short",
+                year: "numeric"
+              });
+              if (info.view.type=="dayGridMonth") {
+                info.view.calendar.setOption('titleFormat', () => newTitle);
+              } else {
+                info.view.calendar.setOption('titleFormat', () => '');
+              }
+            },
+            dayHeaderContent: function(info) {
+              if (info.view.type === 'timeGridDay') {
+                return info.date.toLocaleDateString('fr-FR', {
+                  weekday: 'long',
+                  day: 'numeric',
+                  month: 'short',
+                });
+              }
+              // Pour les autres vues → texte standard
+              return info.text;
             },
             views: {
               timeGridDay :{
-                buttonText: '1 jour'
+                buttonText: '1 jour',
               },
               TimeGridThreeDay: {
                 type: 'timeGridDay',
@@ -235,7 +268,7 @@ span {
               },
               dayGridMonth :{
                 buttonText: '1 mois',
-                dayMaxEvents : 3
+                dayMaxEvents : 3,
               },
             },
             initialView : myinitialView,
@@ -245,6 +278,7 @@ span {
             firstDay : 1, // commence le lundi
             allDaySlot : false,
             slotMinTime : "08:00:00",
+            eventTextColor : "white",
             eventClick: function(info) { 
               $('#modal_titre').html(info.event.extendedProps.nom);
               $('#modalBody').html(info.event.extendedProps.description+'<br>'+info.event.extendedProps.nb_terrains.toString()+' terrains disponibles'+info.event.extendedProps.lesinscrits);
