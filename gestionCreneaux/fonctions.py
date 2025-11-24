@@ -144,7 +144,7 @@ def inscription(user,id):
             event.inscrits=len(Inscription.objects.filter(event=event,role=ROLE_INSCRIT))
             event.save() 
             res=True
-    return res # print inutilisé pour l'instant
+    return res # print - try  .   inutilisé pour l'instant
 
 def desinscription(user,id):
     event=Evenement.objects.get(id=id)
@@ -156,7 +156,7 @@ def desinscription(user,id):
         event.inscrits=len(Inscription.objects.filter(event=event,role=ROLE_INSCRIT))
         event.save()
         return True
-    return False # print inutilisé pour l'instant
+    return False # print - try  .  inutilisé pour l'instant
 
 def type_event_modifiable(user):
     # retourne la liste des créneaux que la personne peut créer
@@ -174,10 +174,11 @@ def type_event_modifiable(user):
     return res
 
 def recupere_reglages(user):
+    res={"types" : DEFAULT_TYPES, "ordi" : DEFAULT_ORDI, "tel" : DEFAULT_TEL, "enattente" : DEFAULT_ENATTENTE,"limite" : DEFAULT_LIMITE}
     if not user.is_authenticated:
-        return {"types" : DEFAULT_TYPES, "ordi" : "timeGridWeek", "tel" : "TimeGridThreeDay", "enattente" : DEFAULT_ENATTENTE,"limite" : DEFAULT_LIMITE}
+        return res
     reglages=Reglages.objects.filter(user=user)
-    res={"types" : [], "ordi" : "timeGridWeek", "tel" : "TimeGridThreeDay"}
+    res["types"]=[]
     for x in reglages:
         if x.nom=="types":
             res["types"].append(x.val)

@@ -1,16 +1,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import update_session_auth_hash
+from base.fonctions import auth
 from .fonctions import *
-from .menus import *
 import json
 
-
+@auth(None)
 def reglages(request):
-    reglages=recupere_reglages(request.user)
-    autorises=types_autorises(request.user)
-    dico={x : {"nom" : typecreneau[x]["nom"], "checked" : x in reglages["types"]} for x in autorises}
-    context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES}
+    try:
+        reglages=recupere_reglages(request.user)
+        autorises=types_autorises(request.user)
+        dico={x : {"nom" : typecreneau[x]["nom"], "checked" : x in reglages["types"]} for x in autorises}
+        context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES}
+    except:
+        return redirect('/home')
     return render(request,'gestionCreneaux/reglages.html',context)
 
 def aide(request):
@@ -18,14 +21,18 @@ def aide(request):
     return render(request,'gestionCreneaux/aide.html',context)
 
 def jeulibre(request):
-    reglages=recupere_reglages(request.user)
-    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
-    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
-    modifiables=type_event_modifiable(request.user)
-    typecreneau_modifiables={ x : typecreneau[x] for x in typecreneau if x in modifiables}
-    toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
-    creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
-    context={ "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables, "reglages" : reglages, "admin" : is_admin(request.user), "connecte" : request.user.is_authenticated}
+    context={}
+    try:
+        reglages=recupere_reglages(request.user)
+        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
+        inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+        modifiables=type_event_modifiable(request.user)
+        typecreneau_modifiables={ x : typecreneau[x] for x in typecreneau if x in modifiables}
+        toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+        creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
+        context={ "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables, "reglages" : reglages, "admin" : is_admin(request.user), "connecte" : request.user.is_authenticated}
+    except:
+        pass  
     return render(request,'gestionCreneaux/jeulibre.html',context)
 
 def click(request):
@@ -37,12 +44,15 @@ def click(request):
     return HttpResponse(json.dumps(response_data), content_type="application/json") 
 
 def events(request):
-    reglages=recupere_reglages(request.user)
-    creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
-    inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
-    modifiables=type_event_modifiable(request.user)
-    toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
-    tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
+    try:
+        reglages=recupere_reglages(request.user)
+        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
+        inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+        modifiables=type_event_modifiable(request.user)
+        toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
+        tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
+    except:
+        pass
     return HttpResponse(json.dumps(tab), content_type="application/json") 
 
 def checkbox(request):

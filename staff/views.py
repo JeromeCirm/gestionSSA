@@ -2,6 +2,11 @@ from django.shortcuts import render
 from base.fonctions import auth
 from gestionCreneaux.fonctions import menu_navigation
 
+
+#
+#   inutilisées pour l'instant
+#
+
 @auth(None)
 def sportive(request,numero,context):
     context={"menu" : menu_navigation(request)}

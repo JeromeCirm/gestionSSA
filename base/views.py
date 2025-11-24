@@ -29,7 +29,7 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
-    return redirect('/')
+    return redirect('/home')
 
 def creation_compte(request):
     if not AUTORISE_CREATION: return redirect('/home')
@@ -74,29 +74,28 @@ def demande_reinitialisation(request,login=None,lehash=None):
 
 def change_mdp(request):
     context={ "titresite" : TITRE_SITE}
-    if request.method=='POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        passwordnew=request.POST.get('passwordnew')
-        passwordconfirm=request.POST.get('passwordconfirm')
-        user=authenticate(request,username=username,password=password)
-        if user is not None: 
-            # on vérifie si le compte a bien été activé
-            try:
-                utilisateur=Utilisateur.objects.get(user=user)
-                if not utilisateur.en_attente_confirmation:
-                    if utilisateur.doit_changer_mdp:
-                        if passwordnew==passwordconfirm and passwordnew!=password:
-                            user.set_password(passwordnew)
-                            user.save()
-                            utilisateur.doit_changer_mdp=False
-                            utilisateur.save()
-                            login(request,user)
-                            context["reussi"]=True
-                        else:
-                            context["msg"]="données incorrectes"
-                            return render(request,'base/change_mdp.html',context)
-            except:
-                pass
+    try:
+        if request.method=='POST':
+            username=request.POST.get('username')
+            password=request.POST.get('password')
+            passwordnew=request.POST.get('passwordnew')
+            passwordconfirm=request.POST.get('passwordconfirm')
+            user=authenticate(request,username=username,password=password)
+            if user is not None: 
+                # on vérifie si le compte a bien été activé
+                    utilisateur=Utilisateur.objects.get(user=user)
+                    if not utilisateur.en_attente_confirmation:
+                        if utilisateur.doit_changer_mdp:
+                            if passwordnew==passwordconfirm and passwordnew!=password:
+                                user.set_password(passwordnew)
+                                user.save()
+                                utilisateur.doit_changer_mdp=False
+                                utilisateur.save()
+                                login(request,user)
+                                context["reussi"]=True
+                            else:
+                                context["msg"]="données incorrectes"
+    except:
+        pass
     return render(request,'base/change_mdp.html',context)
 
