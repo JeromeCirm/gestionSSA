@@ -29,6 +29,5 @@ que faire par défaut pour les créneaux à voir, les créneaux que l'on peut fa
 
 fignoler, mais pas forcément une bonne idée ou en second temps : 
  
-gérer la répétition
 gerer la création/suppression en lien avec le nombre de terrains.
 largeur en fonction du nombre de terrains : bof

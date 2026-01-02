@@ -123,6 +123,15 @@ a {
         <label><input type="checkbox" id="checkboxOuvert" name="choix" value="ouvert"> ouvert par défaut</label><br>
       </div>
 
+      <div class="md-form mx-3">
+        repéter <input type="number" id="nbrepetition" min="0" max="100" step="1" value="1"> fois <br>
+        <select id="typerepetition" name="typerepetition">
+          <option value="jour">tous les jours</option>
+          <option value="semaine">toutes les semaines</option>
+          <option value="mois">tous les mois</option>
+        </select>    
+      </div>
+
       <div class="modal-footer d-flex justify-content-center">
         <button class="btn btn-success" id="bouton-suppressionAd" data-dismiss="modal"></button>
         <button class="btn btn-success" id="bouton-creationAd" data-dismiss="modal"></button>
@@ -181,7 +190,7 @@ a {
     function creationmodification(id=-1) { 
        var checked = document.querySelectorAll('input[name="choix"]:checked');
        var options = Array.from(checked).map(checkbox => checkbox.value);
-        api_call("/gestionAdmin/creation_modification",{"date" : $('#modal_date').val(),"debut" : $('#modal_debut').val(),"fin" : $('#modal_fin').val(), "type" : $('#modal_typecreneau').val(),"options" : JSON.stringify(options), "nb_terrains" : $('#modal_nb_terrains').val(),"titre" : selectTitre.value, "description" : selectDesc.value,"id" : id},function (res) { calendar.refetchEvents();})
+        api_call("/gestionAdmin/creation_modification",{"date" : $('#modal_date').val(),"debut" : $('#modal_debut').val(),"fin" : $('#modal_fin').val(), "type" : $('#modal_typecreneau').val(),"options" : JSON.stringify(options), "nb_terrains" : $('#modal_nb_terrains').val(),"titre" : selectTitre.value, "description" : selectDesc.value,"id" : id, "typerepetition" : $('#typerepetition').val(), "nbrepetition" : $('#nbrepetition').val()},function (res) { calendar.refetchEvents();})
     }
 
     function supprimer(id) {

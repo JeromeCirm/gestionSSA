@@ -25,7 +25,7 @@
         }
 </script>
 <div class="modal-dialog" role="document">
-   Liste des créneaux à montrer : 
+  <br> <h5>Liste des créneaux à montrer : </h5> 
     <div class="modal-content">
 
         <div class="md-form mx-3">
@@ -34,9 +34,9 @@
                 <label><input type="checkbox" name="choix" onchange="enattente(this)" {% if reglages.enattente %} checked {% endif %}> créneaux en attente de staff</label><br>
         </div>
     </div>
-</div><br>
+</div>
 <div class="layout__body">
-<button class="btn btn-success" id="bouton-mdp" onclick="$('#myModal').modal();") > changer le mot de passe</button><br><br>
+<button class="btn btn-success" id="bouton-mdp" onclick="$('#myModal').modal();") > changer le mot de passe</button><br><br><br>
     Vue initiale sur téléphone : 
     <select id="vuetel" name="vuetel" onchange="ajuste_vue(this,'tel')">
         {% for x in vues %}

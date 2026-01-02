@@ -6,6 +6,7 @@ from gestionCreneaux.models import Evenement
 from gestionCreneaux.settings import typecreneau
 from .fonctions import *
 from gestionCreneaux.fonctions import is_admin
+from dateutil.relativedelta import relativedelta
 
 @auth([groupe_admin])
 def creation_modification(request):
@@ -35,7 +36,22 @@ def creation_modification(request):
         dt1=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(debut, "%H:%M").time())
         dt2=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(fin, "%H:%M").time())
         if dt2 >=dt1+ datetime.timedelta(minutes=30):
-            Evenement(type=type,nom=nom,description=description,jour=jour,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css).save()
+            typerepetition=request.POST["typerepetition"]
+            nbrepetition=int(request.POST["nbrepetition"])
+            if nbrepetition<1 or nbrepetition>50:
+                nbrepetition=1
+            if typerepetition=="jour":
+                deltarepetition=datetime.timedelta(days=1)
+            elif typerepetition=="semaine":
+                deltarepetition=datetime.timedelta(weeks=1)
+            elif typerepetition=="mois":
+                deltarepetition=relativedelta(months=1)
+            format_date = "%Y-%m-%d"
+            date_obj = datetime.datetime.strptime(jour, format_date)
+            for rep in range(nbrepetition):
+                nouvelle_date = date_obj + deltarepetition*rep
+                jourrep=nouvelle_date.strftime(format_date)
+                Evenement(type=type,nom=nom,description=description,jour=jourrep,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css).save()
     else:
         # modification de créneau
         dt1=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(debut, "%H:%M").time())
