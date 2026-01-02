@@ -63,6 +63,8 @@ VUES_PROPOSEEES = [
     ]
 
 LIMITES_PROPOSEES= [
+    {"label" : "1 semaine", "val" : 7},
+    {"label" : "15 jours", "val" : 14},
     {"label" : "1 mois", "val" : 31},
     {"label" : "2 mois", "val" : 61},
     {"label" : "6 mois", "val" : 183},
