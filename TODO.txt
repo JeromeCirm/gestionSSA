@@ -3,6 +3,9 @@ gérer le menu sticky  :
   * contentAuto empêche l'affichage du nom de la case : le récupérer ?
   * cf scroll dans jeulibre.html à gérer
 
+gerer le style pour l'instant dans jeulibre.html
+petit symbole vert quand les modifs sont faites en api en partie admin ?
+
 vérifier les swipe sur tous les tel : passer à hammerjs sinon ?
 
 vérifier l'ordre des imports de css js dans l'en-tête

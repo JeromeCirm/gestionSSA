@@ -11,13 +11,13 @@ def reglages(request):
         reglages=recupere_reglages(request.user)
         autorises=types_autorises(request.user)
         dico={x : {"nom" : typecreneau[x]["nom"], "checked" : x in reglages["types"]} for x in autorises}
-        context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES}
+        context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES,"admin" : is_admin(request.user)}
     except:
         return redirect('/home')
     return render(request,'gestionCreneaux/reglages.html',context)
 
 def aide(request):
-    context={}
+    context={"admin" : is_admin(request.user)}
     return render(request,'gestionCreneaux/aide.html',context)
 
 def jeulibre(request):

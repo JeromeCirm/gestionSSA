@@ -5,7 +5,9 @@ import json
 from gestionCreneaux.models import Evenement
 from gestionCreneaux.settings import typecreneau
 from .fonctions import *
+from gestionCreneaux.fonctions import is_admin
 
+@auth([groupe_admin])
 def creation_modification(request):
     res=[]
     id=int(request.POST["id"])
@@ -39,18 +41,23 @@ def creation_modification(request):
         dt1=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(debut, "%H:%M").time())
         dt2=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(fin, "%H:%M").time())
         if dt2 >=dt1+ datetime.timedelta(minutes=30):
+            # à condition que le créneau fasse au moins 30mn
             Evenement.objects.filter(id=id).update(type=type,nom=nom,description=description,jour=jour,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css)
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
+@auth([groupe_admin])
 def suppression(request):
     Evenement.objects.filter(id=request.POST['id']).delete()
     res=[]
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
+@auth([groupe_admin])
 def admin(request):
-    context={ "adherents" : User.objects.all().exclude(is_staff=True)}
+    # on exclut les super_admin (pas les admin au sens des groupes de l'appli)
+    context={ "adherents" : User.objects.all().exclude(is_staff=True),"admin" : is_admin(request.user)}
     return render(request,'gestionAdmin/admin.html',context)
 
+@auth([groupe_admin])
 def recupere_info(request):
     user=User.objects.get(id=request.POST["id"])
     res={
@@ -63,6 +70,7 @@ def recupere_info(request):
     }
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
+@auth([groupe_admin])
 def change_info(request):
     user=User.objects.get(id=request.POST["id"])
     group_names=json.loads(request.POST["groupes"])
