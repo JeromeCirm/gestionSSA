@@ -51,7 +51,12 @@
     <select id="limite" name="limite" onchange="ajuste_limite(this)">
         {% for x in limites %}
         <option value="{{ x.val }}" {% if x.val == reglages.limite %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
-    </select> 
+    </select> <br><br>
+    Faire commencer les créneaux 
+    <select id="limite_avant" name="limite_avant" onchange="ajuste_limite_avant(this)">
+        {% for x in limites_avant %}
+        <option value="{{ x.val }}" {% if x.val == reglages.limite_avant %} selected {% endif %}> {{ x.label }} </option> {% endfor %}
+    </select> jours avant la date actuelle
 </div>
 <div class="modal fade" id="myModal" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -94,7 +99,10 @@
     }
     function ajuste_limite(labox) {
         api_call("/gestionCreneaux/ajustelimite",{"val" : labox.value},function (res) { })
-    }    
+    }  
+    function ajuste_limite_avant(labox) {
+        api_call("/gestionCreneaux/ajustelimiteavant",{"val" : labox.value},function (res) { })
+    }      
 </script>
 
 

@@ -94,6 +94,8 @@
     <label for="user">Mail :</label><br>
     <input type="text" id="user_email" value="" disabled><br>
 
+    <button type="button" class="btn btn-danger" onclick="supprime()">Supprimer</button> <br>
+
     <label for="groups">Groupes :</label><br>
     <select id="groups" multiple>
     </select>
@@ -140,6 +142,10 @@
       const selected = Array.from(groups.selectedOptions).map(o => o.value);
       console.log(selected)
       api_call("/gestionAdmin/change_info",{ "id" : userid.value, "groupes" : JSON.stringify(selected)}, function (res) {});
+    }
+
+    function supprime() {
+      api_call("/gestionAdmin/supprime_compte",{ "id" : userid.value}, function (res) {});
     }
   </script>
 

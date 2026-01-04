@@ -7,7 +7,7 @@ import datetime
 from string import digits,ascii_letters
 from re import match
 from random import choice
-from gestionCreneaux.settings import DEFAULT_TYPES, DEFAULT_ORDI, DEFAULT_TEL, DEFAULT_ENATTENTE, DEFAULT_LIMITE
+from gestionCreneaux.settings import DEFAULT_TYPES, DEFAULT_ORDI, DEFAULT_TEL, DEFAULT_ENATTENTE, DEFAULT_LIMITE, DEFAULT_LIMITE_AVANT
 from gestionCreneaux.models import Reglages
 
 # préfixe pour une "view"
@@ -161,6 +161,7 @@ def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_atten
     Reglages(user=new_user,nom="ordteli",str=DEFAULT_TEL).save()
     Reglages(user=new_user,nom="enattente",bool=en_attente).save()
     Reglages(user=new_user,nom="limite",val=DEFAULT_LIMITE).save()
+    Reglages(user=new_user,nom="limite_avant",val=DEFAULT_LIMITE_AVANT).save()
     for x in types:
         Reglages(user=new_user,nom="types",val=x).save()
     if en_attente_confirmation:

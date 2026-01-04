@@ -1,20 +1,21 @@
+migration compte
+validation des créneaux
+modif/création : vérifier les droits des créateurs de créneaux
+mettre tous le cs/javascript dans les bons fichiers !!!!
+vérifier l'ordre des imports de css js dans l'en-tête
+
 gérer le menu sticky  :
   * menu sticky ou non ? gérer la rustine
   * contentAuto empêche l'affichage du nom de la case : le récupérer ?
   * cf scroll dans jeulibre.html à gérer
 
-gerer le style pour l'instant dans jeulibre.html
 petit symbole vert quand les modifs sont faites en api en partie admin ?
 
 vérifier les swipe sur tous les tel : passer à hammerjs sinon ?
 
-vérifier l'ordre des imports de css js dans l'en-tête
-
 la gonction gestion(user,event) ne gère que le staff classique pour l'instant.
 
 bootstrap modal : gérer la taille sur petit écran : croix de fermeture en haut à gauche, boutons sur deux lignes
-
-menu aide pour les codes couleurs, le texte résumé en page principale, etc...
 
 
 ************************
@@ -29,5 +30,6 @@ que faire par défaut pour les créneaux à voir, les créneaux que l'on peut fa
 
 fignoler, mais pas forcément une bonne idée ou en second temps : 
  
+supprimer compte : message fait/pas fait à ajouter 
 gerer la création/suppression en lien avec le nombre de terrains.
 largeur en fonction du nombre de terrains : bof

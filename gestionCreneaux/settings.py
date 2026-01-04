@@ -53,7 +53,8 @@ DEFAULT_TYPES=[EVENT_JEULIBRE,EVENT_TOURNOI]
 DEFAULT_TEL="TimeGridThreeDay"
 DEFAULT_ORDI="timeGridWeek"
 DEFAULT_ENATTENTE=False
-DEFAULT_LIMITE=31
+DEFAULT_LIMITE=14
+DEFAULT_LIMITE_AVANT=0
 
 VUES_PROPOSEEES = [
     {"label" : "1 jour", "nom" : "timeGridDay"},
@@ -68,4 +69,10 @@ LIMITES_PROPOSEES= [
     {"label" : "1 mois", "val" : 31},
     {"label" : "2 mois", "val" : 61},
     {"label" : "6 mois", "val" : 183},
+    ]
+
+LIMITES_PROPOSEES_AVANT= [
+    {"label" : "0 jours", "val" : 0},
+    {"label" : "3 jours", "val" : 3},
+    {"label" : "1 semaine", "val" : 7},
     ]

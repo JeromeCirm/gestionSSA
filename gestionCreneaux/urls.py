@@ -13,4 +13,5 @@ urlpatterns = [
     path("ajustevue",views.ajustevue,name="ajustevue"),
     path("changemdp",views.changemdp,name="changemdp"),
     path("ajustelimite",views.ajustelimite,name="ajustelimite"),
+    path("ajustelimiteavant",views.ajustelimiteavant,name="ajustelimiteavant"),
 ]

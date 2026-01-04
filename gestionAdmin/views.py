@@ -63,6 +63,7 @@ def creation_modification(request):
 
 @auth([groupe_admin])
 def suppression(request):
+    # est-ce utilisé ??????
     Evenement.objects.filter(id=request.POST['id']).delete()
     res=[]
     return HttpResponse(json.dumps(res), content_type="application/json") 
@@ -93,5 +94,14 @@ def change_info(request):
     lesgroups = Group.objects.filter(name__in=group_names)
     user.groups.set(lesgroups)    
     user.save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+@auth([groupe_admin])
+def supprime_compte(request):
+    print("hi",request.POST["id"],request.user.id)
+    user=User.objects.get(id=request.POST["id"])
+    if user!=request.user:
+        # on interdit la suppression du compte connecté
+        user.delete()
     return HttpResponse(json.dumps(""), content_type="application/json") 
 

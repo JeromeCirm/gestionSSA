@@ -174,7 +174,7 @@ def type_event_modifiable(user):
     return res
 
 def recupere_reglages(user):
-    res={"types" : DEFAULT_TYPES, "ordi" : DEFAULT_ORDI, "tel" : DEFAULT_TEL, "enattente" : DEFAULT_ENATTENTE,"limite" : DEFAULT_LIMITE}
+    res={"types" : DEFAULT_TYPES, "ordi" : DEFAULT_ORDI, "tel" : DEFAULT_TEL, "enattente" : DEFAULT_ENATTENTE,"limite" : DEFAULT_LIMITE, "limite_avant" : DEFAULT_LIMITE_AVANT}
     if not user.is_authenticated:
         return res
     reglages=Reglages.objects.filter(user=user)
@@ -190,6 +190,8 @@ def recupere_reglages(user):
             res["enattente"]=x.bool
         elif x.nom=="limite":
             res["limite"]=x.val
+        elif x.nom=="limite_avant":
+            res["limite_avant"]=x.val
     return res
 
 def is_admin(user):

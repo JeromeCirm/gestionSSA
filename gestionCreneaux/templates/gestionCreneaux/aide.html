@@ -4,8 +4,79 @@
 {% csrf_token %}
 {% include 'menu.html'%}
 
+<style>
 
-C'est la page aide ! 
+.event-jeulibre {
+  background-color : green;
+}
 
+.event-tournoi {
+  background-color : orange;
+}
 
+.event-jeulibreinscription {
+  background-color : blue;
+}
+
+.event-entrainement {
+  background-color : plum;
+}
+
+.event-enattente {
+  background-color : gray;
+}
+
+.ligne {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* espace entre la pastille et le texte */
+}
+
+.pastille {
+  height: 16px;
+  width: 32px;          /* 2 × hauteur */
+  border-radius: 999px;
+  flex-shrink: 0;       /* empêche l’écrasement */
+}
+
+.texte {
+  font-size: 14px;
+  color: #333;
+}
+</style>
+
+<div class="modal-dialog" role="document">
+  <br> <h5>code couleur : </h5> 
+    <div class="modal-content">
+
+        <div class="md-form mx-3">
+            <span class="ligne">
+                <span class="pastille event-jeulibre"></span>
+                <span class="texte"> jeu libre</span>
+            </span><br>
+            <span class="ligne">
+                <span class="pastille event-jeulibreinscription"></span>
+                <span class="texte"> jeu libre sur inscription</span>
+            </span><br>
+            <span class="ligne">
+                <span class="pastille event-enattente"></span>
+                <span class="texte"> créneau possible mais en attente de staff</span>
+            </span><br>
+            <span class="ligne">
+                <span class="pastille event-entrainement"></span>
+                <span class="texte"> entrainement</span>
+            </span><br>
+            <span class="ligne">
+                <span class="pastille event-tournoi"></span>
+                <span class="texte"> tournoi</span>
+            </span><br>
+        </div>
+    </div>
+</div>
+
+<div class="modal-dialog" role="document">
+Pour avoir accès à l'ensemble des réglages du site, il faut être connecté ! <br>
+Dans la partie réglagle, il est alors possible de choisir le type de créneaux visible. <br>
+Il est aussi possible de choisir le nombre de jours à afficher (15 par défaut) : augmenter cette valeur est sans doute peu utile et peut ralentir fortement le chargement de la page ; il est possible de diminuer la valeur pour les téléphones sur lesquels l'affichage est trop lent.
+</div>
 {% endblock body %}

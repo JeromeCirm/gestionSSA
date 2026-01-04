@@ -11,7 +11,7 @@ def reglages(request):
         reglages=recupere_reglages(request.user)
         autorises=types_autorises(request.user)
         dico={x : {"nom" : typecreneau[x]["nom"], "checked" : x in reglages["types"]} for x in autorises}
-        context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES,"admin" : is_admin(request.user)}
+        context={"reglages" : reglages, "types" : dico, "vues" : VUES_PROPOSEEES, "limites" : LIMITES_PROPOSEES, "limites_avant" : LIMITES_PROPOSEES_AVANT, "admin" : is_admin(request.user)}
     except:
         return redirect('/home')
     return render(request,'gestionCreneaux/reglages.html',context)
@@ -44,14 +44,14 @@ def click(request):
     return HttpResponse(json.dumps(response_data), content_type="application/json") 
 
 def events(request):
-    try:
+    if True: #try:
         reglages=recupere_reglages(request.user)
-        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
+        creneaux=lecture_creneaux(datetime.datetime.now()+datetime.timedelta(days=-reglages["limite_avant"]),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"],enattente=reglages["enattente"])
         inscriptions=lecture_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
         modifiables=type_event_modifiable(request.user)
         toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
         tab=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
-    except:
+    #except:
         pass
     return HttpResponse(json.dumps(tab), content_type="application/json") 
 
@@ -86,4 +86,9 @@ def changemdp(request):
 def ajustelimite(request):
     Reglages.objects.filter(user=request.user,nom="limite").delete()
     Reglages(user=request.user,nom="limite",val=request.POST["val"]).save()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def ajustelimiteavant(request):
+    Reglages.objects.filter(user=request.user,nom="limite_avant").delete()
+    Reglages(user=request.user,nom="limite_avant",val=request.POST["val"]).save()
     return HttpResponse(json.dumps(""), content_type="application/json") 
