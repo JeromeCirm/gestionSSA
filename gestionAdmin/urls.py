@@ -7,7 +7,7 @@ urlpatterns = [
     path("recupere_info", views.recupere_info, name="recupere_info"),
     path("change_info", views.change_info, name="change_info"),
     path("creation_modification", views.creation_modification, name="creation_modification"),
-    path("suppression", views.suppression, name="suppression"),   ### utilisé ?????
+    path("suppression", views.suppression, name="suppression"),
     path("supprime_compte", views.supprime_compte, name="supprime_compte"),
 
 ]

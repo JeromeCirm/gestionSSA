@@ -1,6 +1,5 @@
 migration compte
 validation des créneaux
-modif/création : vérifier les droits des créateurs de créneaux
 mettre tous le cs/javascript dans les bons fichiers !!!!
 vérifier l'ordre des imports de css js dans l'en-tête
 

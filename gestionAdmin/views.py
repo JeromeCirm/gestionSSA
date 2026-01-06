@@ -5,10 +5,11 @@ import json
 from gestionCreneaux.models import Evenement
 from gestionCreneaux.settings import typecreneau
 from .fonctions import *
-from gestionCreneaux.fonctions import is_admin
+from gestionCreneaux.fonctions import is_admin,type_event_modifiable
 from dateutil.relativedelta import relativedelta
 
-@auth([groupe_admin])
+#groupe_admin=1 #pendant la réinitialisation
+
 def creation_modification(request):
     res=[]
     id=int(request.POST["id"])
@@ -31,6 +32,7 @@ def creation_modification(request):
     nom=request.POST["titre"]
     description=request.POST["description"]
     type=type%100
+    modifiables=type_event_modifiable(request.user)
     if id==-1:
         # création de créneau
         dt1=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(debut, "%H:%M").time())
@@ -48,23 +50,31 @@ def creation_modification(request):
                 deltarepetition=relativedelta(months=1)
             format_date = "%Y-%m-%d"
             date_obj = datetime.datetime.strptime(jour, format_date)
-            for rep in range(nbrepetition):
-                nouvelle_date = date_obj + deltarepetition*rep
-                jourrep=nouvelle_date.strftime(format_date)
-                Evenement(type=type,nom=nom,description=description,jour=jourrep,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css).save()
+            if type in modifiables:
+                for rep in range(nbrepetition):
+                    nouvelle_date = date_obj + deltarepetition*rep
+                    jourrep=nouvelle_date.strftime(format_date)
+                    Evenement(type=type,nom=nom,description=description,jour=jourrep,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css).save()
+            else:
+                print("hack") #if True
     else:
         # modification de créneau
         dt1=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(debut, "%H:%M").time())
         dt2=datetime.datetime.combine(datetime.date.today(), datetime.datetime.strptime(fin, "%H:%M").time())
         if dt2 >=dt1+ datetime.timedelta(minutes=30):
             # à condition que le créneau fasse au moins 30mn
-            Evenement.objects.filter(id=id).update(type=type,nom=nom,description=description,jour=jour,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css)
+            ev=Evenement.objects.get(id=id)
+            if ev.type in modifiables:
+                Evenement.objects.filter(id=id).update(type=type,nom=nom,description=description,jour=jour,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css)
+            else:
+                print("hack") #if True
     return HttpResponse(json.dumps(res), content_type="application/json") 
 
-@auth([groupe_admin])
 def suppression(request):
-    # est-ce utilisé ??????
-    Evenement.objects.filter(id=request.POST['id']).delete()
+    modifiables=type_event_modifiable(request.user)
+    ev=Evenement.objects.get(id=request.POST['id'])
+    if ev.type in modifiables:
+        ev.delete()
     res=[]
     return HttpResponse(json.dumps(res), content_type="application/json") 
 

@@ -26,7 +26,8 @@ except:
     pass
 
 # les constantes pour indiquer le type d'évenement
-# penser à modifier la fonction type_event_modifiable en cas d'ajout d'event
+# penser à modifier la fonction type_event_modifiable dans gestionCreneaux.fonctions en cas d'ajout d'event
+# c'est elle qui gère les droits en fonction des groupes.
 EVENT_JEULIBRE=0
 EVENT_ENTRAINEMENT=1
 EVENT_TOURNOI=2

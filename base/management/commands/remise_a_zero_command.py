@@ -36,8 +36,9 @@ class Command(BaseCommand):
             ["cs",["creation_sportive"],DEFAULT_TYPES,True],
             ["ce",["creation_entrainement"],[EVENT_ENTRAINEMENT],True],
             ["cea",["creation_entrainement_avalider"],[EVENT_ENTRAINEMENT_A_VALIDER],True],
+            ["ct",["creation_tournois"],[EVENT_TOURNOI],True],
             ["ve",["validation_entrainement"],[EVENT_ENTRAINEMENT_A_VALIDER],True],
-            ["ad",["admin","staff","sportive","creation_jeulibre","creation_sportive","creation_entrainement","creation_entrainement_avalider","validation_entrainement"],[EVENT_JEULIBRE,EVENT_ENTRAINEMENT,EVENT_TOURNOI,EVENT_ENTRAINEMENT_A_VALIDER],True],
+            ["ad",["admin","staff","sportive","creation_jeulibre","creation_sportive","creation_tournois","creation_entrainement","creation_entrainement_avalider","validation_entrainement"],[EVENT_JEULIBRE,EVENT_ENTRAINEMENT,EVENT_TOURNOI,EVENT_ENTRAINEMENT_A_VALIDER],True],
             ]:
             user=creation_utilisateur(login,login,login,"",en_attente_confirmation=False,types=types,en_attente=enattente)
             for x in groupes:
