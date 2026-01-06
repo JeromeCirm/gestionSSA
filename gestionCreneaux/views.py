@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import update_session_auth_hash
+from django.utils.formats import date_format
 from base.fonctions import auth
 from .fonctions import *
 import json
@@ -30,7 +31,7 @@ def jeulibre(request):
         typecreneau_modifiables={ x : typecreneau[x] for x in typecreneau if x in modifiables}
         toutes_inscriptions=lecture_toutes_inscription(request.user,datetime.datetime.now()+datetime.timedelta(days=-7),fin=datetime.datetime.now()+datetime.timedelta(days=reglages["limite"]),types=reglages["types"])
         creneaux=preparation_creneaux(request.user,creneaux,inscriptions,modifiables,toutes_inscriptions)
-        context={ "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables, "reglages" : reglages, "admin" : is_admin(request.user), "connecte" : request.user.is_authenticated}
+        context={ "creneaux" : creneaux,"modifiables" : modifiables, "typecreneau" : typecreneau_modifiables, "reglages" : reglages, "admin" : is_admin(request.user), "connecte" : request.user.is_authenticated, "validation" : autorisation_valider(request.user)}
     except:
         print("erreur gestionCreneaux.jeulibre")
     return render(request,'gestionCreneaux/jeulibre.html',context)
@@ -92,3 +93,28 @@ def ajustelimiteavant(request):
     Reglages.objects.filter(user=request.user,nom="limite_avant").delete()
     Reglages(user=request.user,nom="limite_avant",val=request.POST["val"]).save()
     return HttpResponse(json.dumps(""), content_type="application/json") 
+
+def recuperevalidation(request):
+    # récupération de la liste des créneaux à valider
+    liste=[]
+    if request.user.is_authenticated:
+        if groupe_validation_entrainement in request.user.groups.all():
+            debut=datetime.datetime.now()
+            evs=Evenement.objects.filter(jour__gte=debut,type=EVENT_ENTRAINEMENT_A_VALIDER).order_by("jour","debut")
+            for x in evs:
+                l=[date_format(x.jour, "l d F", use_l10n=True),"de",str(x.debut)[:-3],"à",str(x.fin)[:-3]]
+                d={"id" : x.id, "texte" : " ".join(l)}
+                liste.append(d)
+    return HttpResponse(json.dumps(liste), content_type="application/json")   
+
+def validecreneau(request):
+    if request.user.is_authenticated:
+        if groupe_validation_entrainement in request.user.groups.all():
+            ev=Evenement.objects.get(id=request.POST["id"])
+            if request.POST["val"]=="true":
+                ev.type=EVENT_ENTRAINEMENT
+                ev.save()
+            else:
+                ev.delete()
+    return HttpResponse(json.dumps(""), content_type="application/json") 
+

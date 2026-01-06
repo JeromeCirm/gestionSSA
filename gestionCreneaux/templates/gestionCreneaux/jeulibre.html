@@ -40,6 +40,29 @@ a {
   color : black;
 }
 
+.ligne {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pastille {
+    padding: 4px 12px;
+    border-radius: 999px; /* forme arrondie */
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pastille.oui {
+    background-color: #28a745; /* vert */
+}
+
+.pastille.non {
+    background-color: #dc3545; /* rouge */
+}
 
 </style>
 <script>
@@ -142,6 +165,22 @@ a {
 </div>
       {% endif %}
 
+{% if validation %}
+<div class="modal fade" id="myModalvalidation" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 id="modal_titrevalidation" class="modal-title w-100 font-weight-bold">Créneaux à valider</h4>
+      </div>
+      <div id="modalBodyvalidation" class="modal-body mx-3"></div>
+      <div class="modal-footer d-flex justify-content-center"> 
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> Fermer </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <script>
   "use strict";
   var calendar ;
@@ -223,6 +262,32 @@ a {
       $('#myModalAd').modal();
       ajuste_titre();     
     }
+
+  {% endif %}
+
+  {% if validation %}
+
+    function recuperevalidation() {
+        api_call("/gestionCreneaux/recuperevalidation",{},function (res) {
+          if (res.length != 0) { 
+            var validationtexte="";
+            for (const element of res) {
+                validationtexte=validationtexte+
+                '<p class="ligne">'+element.texte+'<span class="pastille oui" onclick="validecreneau('+element.id+',true)">oui</span><span class="pastille non" onclick="validecreneau('+element.id+',false)">non</span></p>'
+            }
+            $('#modalBodyvalidation').html(validationtexte);
+            $('#myModalvalidation').modal();
+          } 
+        })
+    }
+
+    function validecreneau(id,val) {
+      api_call("/gestionCreneaux/validecreneau",{"id":id,"val" : val},function (res) { 
+        window.location.reload();
+      });
+    }
+
+    recuperevalidation()
 
   {% endif %}
 

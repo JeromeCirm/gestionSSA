@@ -1,7 +1,8 @@
 migration compte
-validation des créneaux
+validation des créneaux ; gérer le changement de couleur lors de la validation ?
 mettre tous le cs/javascript dans les bons fichiers !!!!
 vérifier l'ordre des imports de css js dans l'en-tête
+ajout de créateur de créneau (pour validation)
 
 gérer le menu sticky  :
   * menu sticky ou non ? gérer la rustine

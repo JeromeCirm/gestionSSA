@@ -14,4 +14,6 @@ urlpatterns = [
     path("changemdp",views.changemdp,name="changemdp"),
     path("ajustelimite",views.ajustelimite,name="ajustelimite"),
     path("ajustelimiteavant",views.ajustelimiteavant,name="ajustelimiteavant"),
+    path("recuperevalidation",views.recuperevalidation,name="recuperevalidation"),
+    path("validecreneau",views.validecreneau,name="validecreneau"),
 ]

@@ -202,3 +202,8 @@ def is_admin(user):
 def types_autorises(user):
     # renvoie les types de créneau que la personne a le droit de voir
     return [EVENT_JEULIBRE,EVENT_ENTRAINEMENT,EVENT_TOURNOI]
+
+def autorisation_valider(user):
+    if user.is_authenticated:
+        return groupe_validation_entrainement in user.groups.all()
+    return False
