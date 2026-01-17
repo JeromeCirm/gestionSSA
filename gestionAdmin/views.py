@@ -54,7 +54,7 @@ def creation_modification(request):
                 for rep in range(nbrepetition):
                     nouvelle_date = date_obj + deltarepetition*rep
                     jourrep=nouvelle_date.strftime(format_date)
-                    Evenement(type=type,nom=nom,description=description,jour=jourrep,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css).save()
+                    Evenement(type=type,nom=nom,description=description,jour=jourrep,debut=debut,fin=fin,nb_terrains=nb_terrains,nb_terrains_occupes=nb_terrains_occupes,gestionnaires=gestionnaires,avec_inscription=avec_inscription,css=css,creation=request.user).save()
             else:
                 print("hack") #if True
     else:

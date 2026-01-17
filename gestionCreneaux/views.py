@@ -103,6 +103,8 @@ def recuperevalidation(request):
             evs=Evenement.objects.filter(jour__gte=debut,type=EVENT_ENTRAINEMENT_A_VALIDER).order_by("jour","debut")
             for x in evs:
                 l=[date_format(x.jour, "l d F", use_l10n=True),"de",str(x.debut)[:-3],"à",str(x.fin)[:-3]]
+                if x.creation!=None:
+                    l.append("par "+x.creation.username+" ("+x.creation.first_name+" "+x.creation.last_name+")")
                 d={"id" : x.id, "texte" : " ".join(l)}
                 liste.append(d)
     return HttpResponse(json.dumps(liste), content_type="application/json")   
