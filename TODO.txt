@@ -2,7 +2,6 @@ migration compte
 validation des créneaux ; gérer le changement de couleur lors de la validation ?
 mettre tous le cs/javascript dans les bons fichiers !!!!
 vérifier l'ordre des imports de css js dans l'en-tête
-ajout de créateur de créneau (pour validation)
 
 modif inscription/pas d'inscription.
 login dans la partie admin

@@ -34,6 +34,7 @@ class Evenement(models.Model):
     inscrits=models.IntegerField(null=True,blank=True,default=0)
     gestionnaires=models.IntegerField(null=True,blank=True,default=0) #-1 pour indiquer une ouverture sans staff
     prioritaire=models.BooleanField(null=True,default=False,blank=True) # prioritaire pour les terrains sur les autres créneaux
+    creation=models.ForeignKey(User, null=True,default=None,blank=True,on_delete=models.CASCADE) # qui a créé le créneau ? pour clairifier lors de la validation par exemple
     def __str__(self):
         return "type : "+str(self.type)+", "+self.nom+",id "+str(self.pk)+",jour : "+str(self.jour)+",debut : "+str(self.debut)+",fin : "+str(self.fin)
 
