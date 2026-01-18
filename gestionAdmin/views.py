@@ -9,7 +9,7 @@ from .fonctions import *
 from gestionCreneaux.fonctions import is_admin,type_event_modifiable
 from dateutil.relativedelta import relativedelta
 
-groupe_admin=1 #pendant la réinitialisation
+#groupe_admin=1 #pendant la réinitialisation
 
 def creation_modification(request):
     res=[]
@@ -92,13 +92,17 @@ def admin(request):
 @auth([groupe_admin])
 def recupere_info(request):
     user=User.objects.get(id=request.POST["id"])
+    try:
+        lastco=user.last_login.strftime('%d-%m-%Y')
+    except:
+        lastco=""
     res={
         "id" : user.id,
         "username" : user.username,
         "first_name" : user.first_name ,
         "last_name" : user.last_name ,
         "email" : user.email ,
-        "lastco" : user.last_login,
+        "lastco" : lastco,
         "groupes" : [x.name for x in user.groups.all()],
         "touslesgroupes" : [x.name for x in Group.objects.all().order_by("-name")]
     }
