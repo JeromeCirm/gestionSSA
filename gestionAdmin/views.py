@@ -138,12 +138,8 @@ def importe(request):
                 users[d['pk']]=d['fields']
             elif d['model']=='base.utilisateur':
                 utilisateur[d['pk']]=d['fields']
-    ct=0
     for k in utilisateur:
         ut=utilisateur[k]
-        ct+=1
-        if ct%50==0:
-            print(ct," / ",len(utilisateur))
         if ut["user"] in users :
             us=users[ut["user"]]
             if len(User.objects.filter(username=us["username"]))!=0:
@@ -166,6 +162,5 @@ def importe(request):
                 Reglages(user=new_user,nom="limite_avant",val=DEFAULT_LIMITE_AVANT).save() 
                 for x in types:
                     Reglages(user=new_user,nom="types",val=x).save()
-    print("fin")
     return HttpResponse(json.dumps(""), content_type="application/json") 
 
