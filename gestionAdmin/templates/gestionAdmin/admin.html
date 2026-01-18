@@ -90,6 +90,9 @@
     <label for="user">Mail :</label><br>
     <input type="text" id="user_email" value="" disabled><br>
 
+    <label for="user">Dernière connecion :</label><br>
+    <input type="text" id="lastco" value="" disabled><br>
+
     <button type="button" class="btn btn-danger" onclick="supprime()">Supprimer</button> <br>
 
     <label for="groups">Groupes :</label><br>
@@ -108,6 +111,7 @@
     const login = document.getElementById('username');
     const lenom = document.getElementById('name');
     const user_email = document.getElementById('user_email');
+    const lastco = document.getElementById('lastco');
     const groups = document.getElementById('groups');
 
     function actualise(item) {
@@ -116,6 +120,7 @@
             lenom.value=res["first_name"]+" "+res["last_name"];
             userid.value=res["id"]
             user_email.value=res["email"];
+            lastco.value=res["lastco"]
             groups.innerHTML=""
             res["touslesgroupes"].forEach((item) => {
                 const option = document.createElement("option");

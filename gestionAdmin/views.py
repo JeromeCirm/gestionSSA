@@ -98,6 +98,7 @@ def recupere_info(request):
         "first_name" : user.first_name ,
         "last_name" : user.last_name ,
         "email" : user.email ,
+        "lastco" : user.last_login,
         "groupes" : [x.name for x in user.groups.all()],
         "touslesgroupes" : [x.name for x in Group.objects.all().order_by("-name")]
     }
