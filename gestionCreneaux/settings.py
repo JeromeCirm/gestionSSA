@@ -37,11 +37,11 @@ EVENT_JEULIBRE_ADHERENTS=100 # devient EVENT_JEULIBRE
 # dictionnaire associé avec nom et classe CSS en mode classique/avec inscription
 # titre et description pré-remplissent le formulaire de création
 typecreneau={
-    EVENT_JEULIBRE : { "nom" : "jeu libre", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "séance de jeu libre ouverte à tout le monde", "descriptionins" : "séance de jeu libre ouverte sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
-    EVENT_ENTRAINEMENT : { "nom" : "entrainement", "css" : "event-entrainement","cssins" : "event-entrainement","titre" : "entrainement", "description" : "séance d'entrainement", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
+    EVENT_JEULIBRE : { "nom" : "jeu libre", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "Séance de jeu libre ouverte à tout le monde", "descriptionins" : "Séance de jeu libre ouverte sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
+    EVENT_ENTRAINEMENT : { "nom" : "entrainement", "css" : "event-entrainement","cssins" : "event-entrainement","titre" : "entrainement", "description" : "Séance d'entrainement", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
     EVENT_TOURNOI : { "nom" : "tournoi", "css" : "event-tournoi","cssins" : "event-tournoi","titre" : "tournoi", "description" : "tournoi : venez encourager les équipes. Inscription au tournoi sur le site du BVS", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
     EVENT_ENTRAINEMENT_A_VALIDER : { "nom" : "entrainement à valider", "css" : "event-entrainement-a-valider","cssins" : "event-entrainement-a-valider","titre" : "entrainement", "description" : "entrainement", "descriptionins" : "", "ouvert"  : True, "inscription" : False},
-    EVENT_JEULIBRE_ADHERENTS : { "nom" : "jeu libre adhérents", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "séance de jeu libre réservée aux adhérent(e)s", "descriptionins" : "séance de jeu libre réservée aux adhérent(e)s et sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
+    EVENT_JEULIBRE_ADHERENTS : { "nom" : "jeu libre adhérents", "css" : "event-jeulibre","cssins" : "event-jeulibreinscription","titre" : "jeu libre", "description" : "Séance de jeu libre réservée aux adhérent(e)s", "descriptionins" : "Séance de jeu libre réservée aux adhérent(e)s et sur inscription. La séance peut être annulée s'il n'y a pas assez de personnes inscrites", "ouvert"  : False, "inscription" : False}, 
 }
 
 # les constantes pour indiquer les rôles 
