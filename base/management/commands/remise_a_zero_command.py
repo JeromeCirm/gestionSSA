@@ -19,12 +19,15 @@ class Command(BaseCommand):
     #    parser.add_argument('admin_password')
 
     def handle(self, *args, **options):
-        creation_utilisateur(LOGIN_ADMIN,"","",MDP_ADMIN,en_attente_confirmation=False,admin=True)
+        admin=creation_utilisateur(LOGIN_ADMIN,"","",MDP_ADMIN,en_attente_confirmation=False,admin=True)
         
         ## données de base (groupes)
 
         for nom in ["staff","sportive","creation_jeulibre","creation_tournois","creation_entrainement","creation_entrainement_avalider","creation_event","creation_prioritaire","creation_sportive","admin","validation_entrainement"]:
             Group(name=nom).save()
+
+        admin.groups.add(Group.objects.get(name="admin"))
+
 
         if BIDON:
             for login,groupes,types,enattente in [
