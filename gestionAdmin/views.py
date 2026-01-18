@@ -9,7 +9,7 @@ from .fonctions import *
 from gestionCreneaux.fonctions import is_admin,type_event_modifiable
 from dateutil.relativedelta import relativedelta
 
-#groupe_admin=1 #pendant la réinitialisation
+groupe_admin=1 #pendant la réinitialisation
 
 def creation_modification(request):
     res=[]

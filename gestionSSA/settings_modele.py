@@ -10,6 +10,6 @@ MY_DB_PWD='mdp'
 MY_DB_HOST='localhost'
 MY_DB_PORT='3306'
 
-MY_STATIC_URL = 'static/'
+MY_STATIC_ROOT = ''
 
 
