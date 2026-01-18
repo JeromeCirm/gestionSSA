@@ -9,5 +9,6 @@ urlpatterns = [
     path("creation_modification", views.creation_modification, name="creation_modification"),
     path("suppression", views.suppression, name="suppression"),
     path("supprime_compte", views.supprime_compte, name="supprime_compte"),
+    path("importe", views.importe, name="importe"),
 
 ]

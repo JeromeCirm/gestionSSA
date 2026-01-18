@@ -3,27 +3,7 @@
 {% block body %}
 {% csrf_token %}
 {% include 'menu.html'%}
-<script>
-  function api_call(nom,donnees,retour) {
-            var formData = new FormData();
-            for (x in donnees) {
-              formData.append(x,donnees[x])
-            }
-            csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
-            formData.append('csrfmiddlewaretoken',csrf.value)
-            fetch(nom, {
-              method : 'POST',
-              headers : {
-                'Accept': 'application/json, text/plain, */*',
-                },
-                body: formData
-            }).then(function(res){ return res.json();})
-              .then(function(res){
-                retour(res)
-               })
-                .catch(function(err){ console.log('Erreur requête', err);});
-        }
-</script>
+
 <div class="modal-dialog" role="document">
   <br> <h5>Liste des créneaux à montrer : </h5> 
     <div class="modal-content">
@@ -104,6 +84,5 @@
         api_call("/gestionCreneaux/ajustelimiteavant",{"val" : labox.value},function (res) { })
     }      
 </script>
-
 
 {% endblock body %}

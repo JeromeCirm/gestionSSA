@@ -1,10 +1,8 @@
-migration compte
-validation des créneaux ; gérer le changement de couleur lors de la validation ?
 mettre tous le cs/javascript dans les bons fichiers !!!!
 vérifier l'ordre des imports de css js dans l'en-tête
 
-modif inscription/pas d'inscription.
-login dans la partie admin
+message de verif si >5 création en meme temps ?
+
 
 gérer le menu sticky  :
   * menu sticky ou non ? gérer la rustine

@@ -8,26 +8,6 @@ span {
   white-space: nowrap;
 }
 
-.event-jeulibre {
-  background-color : green;
-}
-
-.event-tournoi {
-  background-color : orange;
-}
-
-.event-jeulibreinscription {
-  background-color : blue;
-}
-
-.event-entrainement {
-  background-color : plum;
-}
-
-.event-enattente {
-  background-color : gray;
-}
-
 .fc-daygrid-event-dot {
     display: none !important;
 }
@@ -63,29 +43,7 @@ a {
 .pastille.non {
     background-color: #dc3545; /* rouge */
 }
-
 </style>
-<script>
-  function api_call(nom,donnees,retour) {
-            var formData = new FormData();
-            for (x in donnees) {
-              formData.append(x,donnees[x])
-            }
-            csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
-            formData.append('csrfmiddlewaretoken',csrf.value)
-            fetch(nom, {
-              method : 'POST',
-              headers : {
-                'Accept': 'application/json, text/plain, */*',
-                },
-                body: formData
-            }).then(function(res){ return res.json();})
-              .then(function(res){
-                retour(res)
-               })
-                .catch(function(err){ console.log('Erreur requête', err);});
-        }
-</script>
 
 <div id='calendar'></div>
 <div class="modal fade" id="myModal" role="dialog" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
@@ -373,7 +331,7 @@ a {
                 $('#modal_date').val(formatDateYYYYMMDD(info.event.start));
                 $('#modal_debut').val(formatTimeHHMM(info.event.start));
                 $('#modal_fin').val(formatTimeHHMM(info.event.end));
-                selectTitre.value=info.event.title;
+                selectTitre.value=info.event.extendedProps.nom;
                 select.value=info.event.extendedProps.type;
                 selectDesc.value=info.event.extendedProps.description;
                 modal_nb_terrains.value=info.event.extendedProps.nb_terrains;

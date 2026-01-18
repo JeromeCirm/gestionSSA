@@ -37,3 +37,51 @@
   </div>
 </nav>
 </header>
+
+<style>
+.event-jeulibre {
+  background-color : green;
+}
+
+.event-tournoi {
+  background-color : orange;
+}
+
+.event-jeulibreinscription {
+  background-color : blue;
+}
+
+.event-entrainement {
+  background-color : plum;
+}
+
+.event-entrainement-a-valider {
+  background-color : rgb(80, 14, 80);
+}
+
+.event-enattente {
+  background-color : gray;
+}
+</style>
+
+<script>
+  function api_call(nom,donnees,retour) {
+            var formData = new FormData();
+            for (x in donnees) {
+              formData.append(x,donnees[x])
+            }
+            csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
+            formData.append('csrfmiddlewaretoken',csrf.value)
+            fetch(nom, {
+              method : 'POST',
+              headers : {
+                'Accept': 'application/json, text/plain, */*',
+                },
+                body: formData
+            }).then(function(res){ return res.json();})
+              .then(function(res){
+                retour(res)
+               })
+                .catch(function(err){ console.log('Erreur requête', err);});
+        }
+</script>

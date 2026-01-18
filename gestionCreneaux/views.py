@@ -115,6 +115,7 @@ def validecreneau(request):
             ev=Evenement.objects.get(id=request.POST["id"])
             if request.POST["val"]=="true":
                 ev.type=EVENT_ENTRAINEMENT
+                ev.css=typecreneau[EVENT_ENTRAINEMENT]["css"]
                 ev.save()
             else:
                 ev.delete()

@@ -27,12 +27,6 @@
 </script>
 
   <style>
-    #mySelect {
-      width: 200px;
-      height: 100px;
-    }
-  </style>
-  <style>
     
     .form-container {
       width: 300px;
@@ -42,7 +36,6 @@
     }
     select {
       width: 100%;
-      height: 120px;
     }
     button {
       margin-top: 15px;
@@ -77,8 +70,8 @@
   <input type="text" id="search" placeholder="Rechercher...">
   <br><br>
 
-  <select id="mySelect" size="3" onchange="actualise(this)"> {% for x in adherents %}
-    <option value="{{ x.id }}">{{ x.first_name}} {{ x.last_name }}</option> {% endfor %}
+  <select id="mySelect" size="10" onchange="actualise(this)"> {% for x in adherents %}
+    <option value="{{ x.id }}">{{ x.username }}({{ x.first_name}} {{ x.last_name }})</option> {% endfor %}
   </select>
 
 </div>
@@ -88,9 +81,12 @@
     
     <input type="text" id="userid" value="" hidden><br>
     
-    <label for="user">Prénom :</label><br>
+    <label for="user">Login :</label><br>
     <input type="text" id="username" value="" disabled><br>
     
+    <label for="user">Nom :</label><br>
+    <input type="text" id="name" value="" disabled><br>
+
     <label for="user">Mail :</label><br>
     <input type="text" id="user_email" value="" disabled><br>
 
@@ -104,17 +100,20 @@
   </div>
     </div>
   </div>
+  <button type="button" onclick="importe()">Import</button>
    <script>
     const search = document.getElementById('search');
     const select = document.getElementById('mySelect');
     const userid = document.getElementById('userid');
-    const username = document.getElementById('username');
+    const login = document.getElementById('username');
+    const lenom = document.getElementById('name');
     const user_email = document.getElementById('user_email');
     const groups = document.getElementById('groups');
 
     function actualise(item) {
         api_call("/gestionAdmin/recupere_info",{ "id" : item.value}, function (res) {
-            username.value=res["first_name"]+" "+res["last_name"];
+            login.value=res["username"]
+            lenom.value=res["first_name"]+" "+res["last_name"];
             userid.value=res["id"]
             user_email.value=res["email"];
             groups.innerHTML=""
@@ -146,6 +145,10 @@
 
     function supprime() {
       api_call("/gestionAdmin/supprime_compte",{ "id" : userid.value}, function (res) {});
+    }
+
+    function importe() {
+      api_call("/gestionAdmin/importe",{ "id" : userid.value}, function (res) {});
     }
   </script>
 
