@@ -1,5 +1,4 @@
-mettre tous le cs/javascript dans les bons fichiers !!!!
-vérifier l'ordre des imports de css js dans l'en-tête
+La date en mode  mois ! 
 
 message de verif si >5 création en meme temps ?
 
