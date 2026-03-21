@@ -25,7 +25,8 @@
           Connexion
         </button><a href="{% url 'home' %}" class="creation-btn"> retour </a><BR><BR> {% if creation %}
         Pas de compte? Création  <a href="{% url 'creation_compte' %}" class="creation-btn"> ici </a><BR> {% endif %} {% if recuperation %}
-        Mot de passe oublié ?  <a href="{% url 'recuperation_password' %}" class="creation-btn"> c'est ici </a> {% endif %}
+        Mot de passe oublié ?  <a href="{% url 'recuperation_password' %}" class="creation-btn"> c'est ici </a><BR>
+        Login oublié ?  <a href="{% url 'recuperation_login' %}" class="creation-btn"> c'est ici </a> {% endif %}
       </form>
     </div>
 

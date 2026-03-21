@@ -99,3 +99,10 @@ def change_mdp(request):
         pass
     return render(request,'base/change_mdp.html',context)
 
+def recuperation_login(request):
+    if not AUTORISE_RECUPERATION: return redirect('/home')
+    context={"titresite" : TITRE_SITE}
+    if request.method=="POST":   
+        context["msg"]=envoie_mail_recuperation_login(request)
+    return render(request,'base/recuperation_login.html',context)
+

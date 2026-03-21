@@ -109,7 +109,7 @@ def envoie_mail_recuperation_mot_de_passe(request):
         msg_mail+="clique sur ce lien pour changer de mot de passe : "
         msg_mail+=URL_COMPLETE+"base/demande_reinitialisation/"+login+"/"+lehash
         msg_mail+="\n\nNe pas répondre, mail automatique."
-        envoie_mail([mail],'Demande de récupération de compte, site MPSI',msg_mail)
+        envoie_mail([mail],'Demande de récupération de compte, site SSA',msg_mail)
         return msg
     except:
         return msg
@@ -174,3 +174,17 @@ def creation_utilisateur(login,prenom,nom,password,mail="",telephone="",en_atten
     else:
         Utilisateur(user=new_user,telephone=telephone,en_attente_confirmation=False).save()
     return new_user
+
+def envoie_mail_recuperation_login(request):
+    msg="Si le  mail correspond à un compte existant, un mail a été envoyé pour rappeler le login."
+    try:
+        mail=request.POST['mail']
+        user=User.objects.get(email=mail)
+        msg_mail="Bonjour "+user.first_name+",\n\n"
+        msg_mail+="Une demande de login vient d'être envoyé pour ce mail .\n\n"
+        msg_mail+="Le login associé à ce compte mail est le suivant :  "+user.username
+        msg_mail+="\n\nNe pas répondre, mail automatique."
+        envoie_mail([mail],'Demande de login, site SSA',msg_mail)
+        return msg
+    except:
+        return msg
