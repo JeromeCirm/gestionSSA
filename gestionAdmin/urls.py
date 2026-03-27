@@ -10,5 +10,7 @@ urlpatterns = [
     path("suppression", views.suppression, name="suppression"),
     path("supprime_compte", views.supprime_compte, name="supprime_compte"),
     path("importe", views.importe, name="importe"),
+    path("stats", views.stats, name="stats"),
+    path("recupere_stats", views.recupere_stats, name="recupere_stats"),
 
 ]

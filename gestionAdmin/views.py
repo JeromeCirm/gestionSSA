@@ -169,3 +169,16 @@ def importe(request):
                     Reglages(user=new_user,nom="types",val=x).save()
     return HttpResponse(json.dumps(""), content_type="application/json") 
 
+@auth([groupe_admin])
+def stats(request):
+    context={"admin" : is_admin(request.user) }
+    return render(request,'gestionAdmin/stats.html',context)
+
+@auth([groupe_admin])
+def recupere_stats(request):
+    if request.method=='POST' and "fonction" in request.POST and "datedebut" in request.POST and "datefin" in request.POST:
+        response_data=recupere_stats_fonction(request.POST["fonction"],request.POST["datedebut"],request.POST["datefin"])
+    else:
+        response_data={}
+    return HttpResponse(json.dumps(response_data), content_type="application/json") 
+

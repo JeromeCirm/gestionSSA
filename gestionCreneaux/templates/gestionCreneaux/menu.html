@@ -15,8 +15,13 @@
       <li class="nav-item"> 
         <a class="nav-link" href="{% url 'aide' %}">Aide</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'gestionAdmin:admin' %}">Admin</a>
+      <li class="nav-item dropdown">
+       <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Admin
+      </a>                                   
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'gestionAdmin:admin' %}">Gestion</a>
+          <a class="dropdown-item" href="{% url 'gestionAdmin:stats' %}">Stats</a>
+      </div>
       </li>
   {% else %}
       <li class="nav-item"> 
