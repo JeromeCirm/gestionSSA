@@ -264,15 +264,13 @@ a {
                 right: 'timeGridDay,TimeGridThreeDay,timeGridWeek,dayGridMonth'
             },
             datesSet: function(info) {
-              // Exemple : afficher "Mois : Novembre 2025"
-              const newTitle = info.start.toLocaleDateString('fr-FR', {
-                month: "short",
-                year: "numeric"
-              });
               if (info.view.type=="dayGridMonth") {
-                info.view.calendar.setOption('titleFormat', () => newTitle);
+                  const middle = new Date((info.start.getTime() + info.end.getTime()) / 2);
+                  const options = { month: 'short', year: 'numeric' };
+                  const newTitle = middle.toLocaleDateString('fr-FR', options);
+                  info.view.calendar.setOption('titleFormat', () => newTitle);
               } else {
-                info.view.calendar.setOption('titleFormat', () => '');
+                  info.view.calendar.setOption('titleFormat', () => '');
               }
             },
             dayHeaderContent: function(info) {
