@@ -50,11 +50,11 @@ ROLE_STAFF=1
 
 # les types par défaut pour un nouvel utilisateur à l'inscription ou pour quelqu'un de déconnecté, 
 # penser  à modifier la fonction de création si on ajoute un réglage
-DEFAULT_TYPES=[EVENT_JEULIBRE,EVENT_TOURNOI]
+DEFAULT_TYPES=[EVENT_JEULIBRE,EVENT_TOURNOI,EVENT_ENTRAINEMENT]
 DEFAULT_TEL="TimeGridThreeDay"
 DEFAULT_ORDI="timeGridWeek"
 DEFAULT_ENATTENTE=False
-DEFAULT_LIMITE=14
+DEFAULT_LIMITE=61
 DEFAULT_LIMITE_AVANT=0
 
 VUES_PROPOSEEES = [
