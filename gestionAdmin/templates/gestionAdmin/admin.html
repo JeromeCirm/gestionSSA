@@ -7,9 +7,9 @@
 <script>
   function api_call(nom,donnees,retour) {
             var formData = new FormData();
-            for (x in donnees) {
-              formData.append(x,donnees[x])
-            }
+            Object.keys(donnees).forEach(function(x) {
+              formData.append(x, donnees[x]);
+            });
             csrf=document.getElementsByName('csrfmiddlewaretoken')[0]
             formData.append('csrfmiddlewaretoken',csrf.value)
             fetch(nom, {
@@ -136,15 +136,20 @@
 
     search.addEventListener('keyup', () => {
       const filter = search.value.toLowerCase();
-      for (let option of select.options) {
+      for (let i = 0; i < select.options.length; i++) {
+        let option = select.options[i];
         const text = option.text.toLowerCase();
-        option.style.display = text.includes(filter) ? '' : 'none';
+        option.hidden = !text.includes(filter);
       }
     });
 
     function saveGroups() {
-      const selected = Array.from(groups.selectedOptions).map(o => o.value);
-      console.log(selected)
+      const selected = [];
+      for (let i = 0; i < groups.options.length; i++) {
+        if (groups.options[i].selected) {
+          selected.push(groups.options[i].value);
+        }
+      }
       api_call("/gestionAdmin/change_info",{ "id" : userid.value, "groupes" : JSON.stringify(selected)}, function (res) {});
     }
 
