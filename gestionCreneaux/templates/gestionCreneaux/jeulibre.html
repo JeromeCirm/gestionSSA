@@ -311,7 +311,7 @@ a {
             eventTextColor : "white",
             eventClick: function(info) { 
               $('#modal_titre').html(info.event.extendedProps.nom);
-              $('#modalBody').html(info.event.extendedProps.description+'<br>'+info.event.extendedProps.nb_terrains.toString()+' terrains disponibles'+info.event.extendedProps.lesinscrits);
+              $('#modalBody').html(info.event.extendedProps.description+'<br>'+info.event.extendedProps.nb_terrains.toString()+' terrain(s) pour ce créneau'+info.event.extendedProps.lesinscrits);
               if (info.event.extendedProps.inscription) {
                 $('#bouton-inscription').text(info.event.extendedProps.inscription);
                 $('#bouton-inscription').attr('onclick','clickbutton('+info.event.id.toString()+','+info.event.extendedProps.cmd+')')

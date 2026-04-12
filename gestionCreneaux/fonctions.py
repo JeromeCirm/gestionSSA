@@ -66,12 +66,13 @@ def preparation_creneaux(user,creneaux,inscriptions,modifiables,toutes_inscripti
     gestionnaire=gestion(user)  # à gérer par event éventuellement ? staff pour l'instant
     for x in creneaux:
         dico={}
+        dico["nb_terrains"]=min(x.nb_terrains_occupes,x.nb_terrains) # patch inutile unfois vérifiée à la création
         dico["id"]=x.id
         dico["nom"]=x.nom
         if x.avec_inscription:
-            dico["title"]=x.nom+', '+str(x.inscrits)+' ins, '+str(x.nb_terrains_occupes)+"T"
+            dico["title"]=x.nom+', '+str(x.inscrits)+' ins, '+str(dico["nb_terrains"])+"T"
         else:
-            dico["title"]=x.nom+', '+str(x.nb_terrains_occupes)+"T"
+            dico["title"]=x.nom+', '+str(dico["nb_terrains"])+"T"
         # format YYYY-MM-DDTHH:MM:SS,   ex : 2025-10-25T09:00:00
         dico["start"]=f"{x.jour.year:04d}-{x.jour.month:02d}-{x.jour.day:02d}T{x.debut.hour:02d}:{x.debut.minute:02d}:00"
         dico["end"]=f"{x.jour.year:04d}-{x.jour.month:02d}-{x.jour.day:02d}T{x.fin.hour:02d}:{x.fin.minute:02d}:00"
@@ -99,7 +100,6 @@ def preparation_creneaux(user,creneaux,inscriptions,modifiables,toutes_inscripti
         dico["creneaux_modifiable"]=x.type in modifiables
         # les champs à afficher/utiles pour la modif
         dico["description"]=x.description
-        dico["nb_terrains"]=x.nb_terrains
         dico["avec_inscription"]=x.avec_inscription
         s=""
         if gestionnaire:
