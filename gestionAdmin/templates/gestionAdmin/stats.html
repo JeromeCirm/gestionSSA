@@ -38,7 +38,8 @@ function click(fonction) {
 	  headers : {
 		'Accept': 'application/json, text/plain, */*',
   	  },
-  	  body: formData
+  	  body: formData,
+      credentials: 'same-origin'
 	}).then(function(res){ return res.json();})
 	  .then(function(res){
         if (fonction=="staff_creneaux") { affiche_staff_creneaux(res["creneau_et_staff"])}

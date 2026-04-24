@@ -17,7 +17,8 @@
               headers : {
                 'Accept': 'application/json, text/plain, */*',
                 },
-                body: formData
+                body: formData,
+                credentials: 'same-origin'
             }).then(function(res){ return res.json();})
               .then(function(res){
                 retour(res)
@@ -70,7 +71,7 @@
   <input type="text" id="search" placeholder="Rechercher...">
   <br><br>
 
-  <select id="mySelect" size="10" onchange="actualise(this)"> {% for x in adherents %}
+  <select id="mySelect" size="10"> {% for x in adherents %}
     <option value="{{ x.id }}">{{ x.username }}({{ x.first_name}} {{ x.last_name }})</option> {% endfor %}
   </select>
 
@@ -90,7 +91,7 @@
     <label for="user">Mail :</label><br>
     <input type="text" id="user_email" value="" disabled><br>
 
-    <label for="user">Dernière connecion :</label><br>
+    <label for="user">Dernière connexion :</label><br>
     <input type="text" id="lastco" value="" disabled><br>
 
     <button type="button" class="btn btn-danger" onclick="supprime()">Supprimer</button> <br>
@@ -113,6 +114,10 @@
     const user_email = document.getElementById('user_email');
     const lastco = document.getElementById('lastco');
     const groups = document.getElementById('groups');
+
+    select.addEventListener('change', function() {
+      actualise(this);
+    });
 
     function actualise(item) {
         api_call("/gestionAdmin/recupere_info",{ "id" : item.value}, function (res) {
@@ -139,7 +144,7 @@
       for (let i = 0; i < select.options.length; i++) {
         let option = select.options[i];
         const text = option.text.toLowerCase();
-        option.hidden = !text.includes(filter);
+        option.style.display = text.includes(filter) ? '' : 'none';
       }
     });
 
